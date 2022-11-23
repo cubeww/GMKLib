@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "wnwO9gjkgKTZoX3lTQHxxyW7N2H2Qd4J14rswPQ1x3olqE6MextgdLimTWqdiFrhr1RwVMXzVE9j73fRiojOAw==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\CSharp\\GameMaker\\GMKLibTest\\GMKLibTest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\h7613\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\h7613\\.nuget\\packages\\sharpziplib\\1.4.1\\sharpziplib.1.4.1.nupkg.sha512",
+    "C:\\Users\\h7613\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

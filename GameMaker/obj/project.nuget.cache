@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "zyDk3eVgFe8W6GV5rb09zTAaI4nLQ3rAOaYT1Mu5BbY2EruxUWK2uZ3CXK2L6ptcdafM+AaDnfTUmXGUMNjtOg==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\GameMaker.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\h7613\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\h7613\\.nuget\\packages\\sharpziplib\\1.4.1\\sharpziplib.1.4.1.nupkg.sha512",
+    "C:\\Users\\h7613\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

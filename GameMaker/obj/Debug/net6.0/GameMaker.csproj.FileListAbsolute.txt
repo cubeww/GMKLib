@@ -1,0 +1,12 @@
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.csproj.AssemblyReference.cache
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.AssemblyInfoInputs.cache
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.AssemblyInfo.cs
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.csproj.CoreCompileInputs.cache
+D:\Projects\CSharp\GameMaker\GameMaker\bin\Debug\net6.0\GameMaker.deps.json
+D:\Projects\CSharp\GameMaker\GameMaker\bin\Debug\net6.0\GameMaker.dll
+D:\Projects\CSharp\GameMaker\GameMaker\bin\Debug\net6.0\GameMaker.pdb
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.dll
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\refint\GameMaker.dll
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\GameMaker.pdb
+D:\Projects\CSharp\GameMaker\GameMaker\obj\Debug\net6.0\ref\GameMaker.dll
