@@ -169,11 +169,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\GameMaker.csproj",
+      "projectUniqueName": "D:\\Projects\\CSharp\\GMKLib\\GameMaker\\GameMaker.csproj",
       "projectName": "GameMaker",
-      "projectPath": "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\GameMaker.csproj",
+      "projectPath": "D:\\Projects\\CSharp\\GMKLib\\GameMaker\\GameMaker.csproj",
       "packagesPath": "C:\\Users\\h7613\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\obj\\",
+      "outputPath": "D:\\Projects\\CSharp\\GMKLib\\GameMaker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Users\\h7613\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",

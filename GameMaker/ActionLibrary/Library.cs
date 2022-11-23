@@ -44,8 +44,6 @@ namespace GameMaker.ActionLibrary
     /// </summary>
     public class Library
     {
-        #region Members
-        #region Fields
 
         private FileVersion m_fileVersion;
         private string m_tabCaption;
@@ -58,8 +56,6 @@ namespace GameMaker.ActionLibrary
         private bool m_advanced;
         private List<Action> m_actions = new List<Action>();
 
-        #endregion
-        #region Properties
 
         /// <summary>
         /// Gets or sets the <see cref="FileVersion"/>.
@@ -178,9 +174,6 @@ namespace GameMaker.ActionLibrary
             internal set { m_actions = value; }
         }
 
-        #endregion
-        #endregion
-        #region Methods
 
         public Library()
         {
@@ -206,6 +199,5 @@ namespace GameMaker.ActionLibrary
             Actions.Insert(index, a);
         }
 
-        #endregion
     }
 }

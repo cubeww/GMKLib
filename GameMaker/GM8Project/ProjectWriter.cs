@@ -98,7 +98,6 @@ namespace GameMaker.GM8Project
         }
 
 
-        #region WriteSettings
 
         private void WriteSettings(GlobalSettings settings)
         {
@@ -194,9 +193,7 @@ namespace GameMaker.GM8Project
             EndCompression();
         }
 
-        #endregion
 
-        #region WriteTriggers
 
         private void WriteTriggers(List<Trigger> triggers)
         {
@@ -226,9 +223,7 @@ namespace GameMaker.GM8Project
             WriteDouble(Trigger.LastChanged.ToOADate());
         }
 
-        #endregion
 
-        #region WriteConstants
 
         private void WriteContants(List<Constant> consants)
         {
@@ -244,9 +239,7 @@ namespace GameMaker.GM8Project
             WriteDouble(Constant.LastChanged.ToOADate());
         }
 
-        #endregion
 
-        #region WriteSounds
 
         private void WriteSounds(ResourceCollection<Sound> sounds)
         {
@@ -296,9 +289,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteSprites
 
         private void WriteSprites(ResourceCollection<Sprite> sprites)
         {
@@ -358,9 +349,7 @@ namespace GameMaker.GM8Project
             }
         }
         
-        #endregion
 
-        #region WriteBackgrounds
 
         private void WriteBackgrounds(ResourceCollection<Background> backgrounds)
         {
@@ -410,9 +399,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WritePaths
 
         private void WritePaths(ResourceCollection<GMPath> paths)
         {
@@ -460,9 +447,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteScripts
 
         private void WriteScripts(ResourceCollection<Script> scripts)
         {
@@ -495,9 +480,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteFonts
 
         private void WriteFonts(ResourceCollection<Font> fonts)
         {
@@ -536,9 +519,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteTimelines
 
         private void WriteTimelines(ResourceCollection<Timeline> timelines)
         {
@@ -576,9 +557,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteObjects
 
         private void WriteObjects(ResourceCollection<Object> objects)
         {
@@ -638,9 +617,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteRooms
 
         private void WriteRooms(ResourceCollection<Room> rooms)
         {
@@ -800,9 +777,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteActions
 
         private void WriteActions(List<Action> actions)
         {
@@ -865,9 +840,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteIncludes
 
         private void WriteIncludes(List<Include> includes)
         {
@@ -905,9 +878,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteExtensions
 
         private void WriteExtensions(List<Extension> extensions)
         {
@@ -921,9 +892,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region WriteGameInformation
 
         private void WriteGameInformation(GameInformation information)
         {
@@ -951,9 +920,7 @@ namespace GameMaker.GM8Project
             EndCompression();
         }
 
-        #endregion
 
-        #region WriteTree
 
         private void WriteTree(ProjectNode rootNode)
         {
@@ -987,9 +954,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region Write Methods
 
         protected override void WriteByte(byte b)
         {
@@ -999,9 +964,7 @@ namespace GameMaker.GM8Project
                 base.WriteByte(b);
         }
 
-        #endregion
 
-        #region Compression Methods
 
         private void BeginCompression()
         {
@@ -1045,6 +1008,5 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
     }
 }

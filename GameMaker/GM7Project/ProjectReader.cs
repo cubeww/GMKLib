@@ -45,15 +45,11 @@ namespace GameMaker.GM7Project
 {
     public class ProjectReader : ReaderBase
     {
-        #region Members
 
-        #region Fields
 
         private Obfuscation m_obfuscation = new Obfuscation();
        
-        #endregion
 
-        #region Properties
 
         internal Obfuscation Obfuscation
         {
@@ -71,11 +67,8 @@ namespace GameMaker.GM7Project
             set { m_obfuscation.Seed = value; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         public ProjectReader()
         { }
@@ -141,7 +134,6 @@ namespace GameMaker.GM7Project
             return project;
         }
 
-        #region ReadSettings
 
         private GlobalSettings ReadSettings()
         {
@@ -223,9 +215,7 @@ namespace GameMaker.GM7Project
             return s;
         }
 
-        #endregion
 
-        #region ReadSounds
 
         private ResourceCollection<Sound> ReadSounds()
         {
@@ -272,9 +262,7 @@ namespace GameMaker.GM7Project
             return sounds;
         }
 
-        #endregion
 
-        #region ReadSprites
 
         private ResourceCollection<Sprite> ReadSprites()
         {
@@ -333,9 +321,7 @@ namespace GameMaker.GM7Project
             return sprites;
         }
 
-        #endregion
 
-        #region ReadBackgrounds
 
         private ResourceCollection<Background> ReadBackgrounds()
         {
@@ -392,9 +378,7 @@ namespace GameMaker.GM7Project
             return backgrounds;
         }
 
-        #endregion
 
-        #region ReadPaths
 
         private ResourceCollection<ProjectCommon.Path> ReadPaths()
         {
@@ -444,9 +428,7 @@ namespace GameMaker.GM7Project
             return paths;
         }
 
-        #endregion
 
-        #region ReadScripts
 
         private ResourceCollection<Script> ReadScripts()
         {
@@ -479,9 +461,7 @@ namespace GameMaker.GM7Project
             return scripts;
         }
 
-        #endregion
 
-        #region ReadFonts
 
         private ResourceCollection<Font> ReadFonts()
         {
@@ -519,9 +499,7 @@ namespace GameMaker.GM7Project
 
             return fonts;
         }
-        #endregion
 
-        #region ReadTimelines
 
         private ResourceCollection<Timeline> ReadTimelines()
         {
@@ -567,9 +545,7 @@ namespace GameMaker.GM7Project
             return timelines;
         }
 
-        #endregion
 
-        #region ReadObjects
 
         private ResourceCollection<Object> ReadObjects()
         {
@@ -642,9 +618,7 @@ namespace GameMaker.GM7Project
             return objects;
         }
 
-        #endregion
 
-        #region ReadRooms
 
         private ResourceCollection<Room> ReadRooms(ResourceCollection<Object> objects)
         {
@@ -790,9 +764,7 @@ namespace GameMaker.GM7Project
             return rooms;
         }
 
-        #endregion
 
-        #region ReadActions
 
         private List<Action> ReadActions()
         {
@@ -860,9 +832,7 @@ namespace GameMaker.GM7Project
             return actions;
         }
 
-        #endregion
 
-        #region ReadIncludes
 
         private List<Include> ReadIncludes()
         {
@@ -900,9 +870,7 @@ namespace GameMaker.GM7Project
 
         }
 
-        #endregion
 
-        #region ReadExtensions
 
         private List<Extension> ReadExtensions()
         {
@@ -924,9 +892,7 @@ namespace GameMaker.GM7Project
             return extensions;
         }
 
-        #endregion
 
-        #region ReadGameInformation
 
         private GameInformation ReadGameInformation()
         {
@@ -952,9 +918,7 @@ namespace GameMaker.GM7Project
             return gameInfo;
         }
 
-        #endregion
 
-        #region ReadTree
 
         private ProjectNode ReadTree(string name, Project project)
         {
@@ -1020,9 +984,7 @@ namespace GameMaker.GM7Project
             }
         }
 
-        #endregion
 
-        #region Read Methods
 
         protected override byte ReadByte()
         {
@@ -1076,8 +1038,6 @@ namespace GameMaker.GM7Project
         }
 
 
-        #endregion
 
-        #endregion
     }
 }

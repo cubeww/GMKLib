@@ -41,18 +41,14 @@ namespace GameMaker.ProjectCommon
 {
     public class ProjectNode : Resource
     {
-        #region Members
 
-        #region Fields
 
         private ProjectNodeType m_nodeType = ProjectNodeType.Parent;
         private ResourceType m_resourceType = ResourceType.Sprites;
         private List<ProjectNode> m_nodes = new List<ProjectNode>();
         private int m_children;
 
-        #endregion
 
-        #region Properties
 
         public ProjectNodeType NodeType
         {
@@ -78,8 +74,6 @@ namespace GameMaker.ProjectCommon
             set { m_children = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

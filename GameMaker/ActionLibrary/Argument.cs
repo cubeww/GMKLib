@@ -40,16 +40,12 @@ namespace GameMaker.ActionLibrary
 {
     public class Argument
     {
-        #region Members
-        #region Fields
 
         private string m_caption;
         private ArgumentType m_argumentType;
         private string m_value;
         private string m_menu;
 
-        #endregion
-        #region Properties
 
         public string Caption
         {
@@ -85,13 +81,9 @@ namespace GameMaker.ActionLibrary
             }
         }
 
-        #endregion
-        #endregion
-        #region Methods
 
         public Argument()
         { }
 
-        #endregion
     }
 }

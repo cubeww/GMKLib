@@ -39,9 +39,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Room : Resource
     {
-        #region Members
 
-        #region Fields
 
         private ResourceCollection<Instance> m_instances = new ResourceCollection<Instance>();
         private ResourceCollection<Tile> m_tiles = new ResourceCollection<Tile>();
@@ -81,9 +79,7 @@ namespace GameMaker.ProjectCommon
         private bool m_deleteUnderlyingObjects = true;
         private bool m_deleteUnderlyingTiles = true;
 
-        #endregion
 
-        #region Properties
 
         public ResourceCollection<Instance> Instances
         {
@@ -307,11 +303,8 @@ namespace GameMaker.ProjectCommon
             set { m_deleteUnderlyingTiles = value; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         /// <summary>
         /// Construct a new Game Maker room.
@@ -327,14 +320,11 @@ namespace GameMaker.ProjectCommon
                 m_views[i] = new View();
         }
 
-        #endregion
     }
 
     public class Parallax
     {
-        #region Members
 
-        #region Fields
 
         private int m_backgroundId = -1;
         private int m_x;
@@ -347,9 +337,7 @@ namespace GameMaker.ProjectCommon
         private bool m_tileVertically = true;
         private bool m_stretch;
 
-        #endregion
 
-        #region Properties
 
         public int BackgroundId
         {
@@ -412,16 +400,12 @@ namespace GameMaker.ProjectCommon
             set { m_stretch = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class View
     {
-        #region Members
 
-        #region Fields
         private int m_viewX;
         private int m_viewY;
         private int m_viewWidth = 640;
@@ -437,9 +421,7 @@ namespace GameMaker.ProjectCommon
         private int m_followObject = -1;
         private bool m_visible;
 
-        #endregion
 
-        #region Properties
 
         public int ViewX
         {
@@ -525,16 +507,12 @@ namespace GameMaker.ProjectCommon
             set { m_visible = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Instance : Resource
     {
-        #region Members
 
-        #region Fields
 
         private string m_creationCode = string.Empty;
         private int m_depth;
@@ -543,9 +521,7 @@ namespace GameMaker.ProjectCommon
         private int m_objectId = -1;
         private bool m_locked;
 
-        #endregion
 
-        #region Properties
 
         public string CreationCode
         {
@@ -583,16 +559,12 @@ namespace GameMaker.ProjectCommon
             set { m_locked = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Tile : Resource
     {
-        #region Members
 
-        #region Fields
 
         private int m_x;
         private int m_y;
@@ -604,9 +576,7 @@ namespace GameMaker.ProjectCommon
         private int m_depth;
         private bool m_locked;
 
-        #endregion
 
-        #region Properties
 
         public int X
         {
@@ -662,8 +632,6 @@ namespace GameMaker.ProjectCommon
             set { m_locked = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

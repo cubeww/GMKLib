@@ -40,9 +40,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Path : Resource
     {
-        #region Members
 
-        #region Fields
 
         private List<Point> m_points;
         private ActionEnd m_actionEnd = ActionEnd.MoveToStart;
@@ -54,9 +52,7 @@ namespace GameMaker.ProjectCommon
         private bool m_smooth;
         private bool m_closed = true;
 
-        #endregion
 
-        #region Properties
 
         public List<Point> Points
         {
@@ -112,24 +108,18 @@ namespace GameMaker.ProjectCommon
             set { m_closed = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Point
     {
-        #region Members
 
-        #region Fields
 
         private double m_x;
         private double m_y;
         private double m_speed;
 
-        #endregion
 
-        #region Properties
 
         public double X
         {
@@ -149,8 +139,6 @@ namespace GameMaker.ProjectCommon
             set { m_speed = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

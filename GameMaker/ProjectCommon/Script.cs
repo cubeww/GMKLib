@@ -39,16 +39,12 @@ namespace GameMaker.ProjectCommon
 {
     public class Script : Resource
     {
-        #region Members
 
-        #region Fields
 
         private string m_code = string.Empty;
         private DateTime m_lastChanged = DateTime.Now;
 
-        #endregion
 
-        #region Properties
 
         public string Code
         {
@@ -62,8 +58,6 @@ namespace GameMaker.ProjectCommon
             set { m_lastChanged = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

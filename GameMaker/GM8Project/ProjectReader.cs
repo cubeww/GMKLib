@@ -47,21 +47,14 @@ namespace GameMaker.GM8Project
 {
     public class ProjectReader : ReaderBase
     {
-        #region Members
        
-        #region Fields
 
         private MemoryStream m_zlibStream = null;
 
-        #endregion
 
-        #region Properties
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         public ProjectReader()
         {}
@@ -71,7 +64,6 @@ namespace GameMaker.GM8Project
             Open(path);
         }
 
-        #region ReadProject
 
         public Project ReadProject()
         {
@@ -122,9 +114,7 @@ namespace GameMaker.GM8Project
             return project;
         }
 
-        #endregion
 
-        #region ReadSettings
         private GlobalSettings ReadSettings()
         {
             GlobalSettings settings = new GlobalSettings();
@@ -205,9 +195,7 @@ namespace GameMaker.GM8Project
             return settings;
         }
 
-        #endregion
 
-        #region ReadTriggers
 
         private List<Trigger> ReadTriggers()
         {
@@ -238,9 +226,7 @@ namespace GameMaker.GM8Project
             return triggers;
         }
 
-        #endregion
 
-        #region ReadConstants
 
         private List<Constant> ReadConstants()
         {
@@ -265,9 +251,7 @@ namespace GameMaker.GM8Project
             return constants;
         }
 
-        #endregion
 
-        #region ReadSounds
 
         private ResourceCollection<Sound> ReadSounds()
         {
@@ -317,9 +301,7 @@ namespace GameMaker.GM8Project
             return sounds;
         }
 
-        #endregion
 
-        #region ReadSprites
 
         private ResourceCollection<Sprite> ReadSprites()
         {
@@ -388,9 +370,7 @@ namespace GameMaker.GM8Project
             return sprites;
         }
 
-        #endregion
 
-        #region ReadBackgrounds
 
         private ResourceCollection<Background> ReadBackgrounds()
         {
@@ -451,9 +431,7 @@ namespace GameMaker.GM8Project
             return backgrounds;
         }
 
-        #endregion
 
-        #region ReadPaths
 
         private ResourceCollection<GMPath> ReadPaths()
         {
@@ -509,9 +487,7 @@ namespace GameMaker.GM8Project
             return paths;
         }
 
-        #endregion
 
-        #region ReadScripts
 
         private ResourceCollection<Script> ReadScripts()
         {
@@ -552,9 +528,7 @@ namespace GameMaker.GM8Project
             return scripts;
         }
 
-        #endregion
 
-        #region ReadFonts
 
         private ResourceCollection<Font> ReadFonts()
         {
@@ -598,9 +572,7 @@ namespace GameMaker.GM8Project
 
             return fonts;
         }
-        #endregion
 
-        #region ReadTimelines
 
         private ResourceCollection<Timeline> ReadTimelines()
         {
@@ -650,9 +622,7 @@ namespace GameMaker.GM8Project
             return timelines;
         }
 
-        #endregion
 
-        #region ReadObjects
 
         private ResourceCollection<Object> ReadObjects()
         {
@@ -730,9 +700,7 @@ namespace GameMaker.GM8Project
             return objects;
         }
 
-        #endregion
 
-        #region ReadRooms
 
         private ResourceCollection<Room> ReadRooms(ResourceCollection<Object> objects)
         {
@@ -884,9 +852,7 @@ namespace GameMaker.GM8Project
             return rooms;
         }
 
-        #endregion
 
-        #region ReadActions
 
         private List<Action> ReadActions()
         {
@@ -954,9 +920,7 @@ namespace GameMaker.GM8Project
             return actions;
         }
 
-        #endregion
 
-        #region ReadIncludes
 
         private List<Include> ReadIncludes()
         {
@@ -998,9 +962,7 @@ namespace GameMaker.GM8Project
             return includes;
         }
 
-        #endregion
 
-        #region ReadExtensions
 
         private List<Extension> ReadExtensions()
         {
@@ -1022,9 +984,7 @@ namespace GameMaker.GM8Project
             return extensions;
         }
 
-        #endregion
 
-        #region ReadGameInformation
 
         private GameInformation ReadGameInformation()
         {
@@ -1056,9 +1016,7 @@ namespace GameMaker.GM8Project
             return gameInfo;
         }
 
-        #endregion
 
-        #region ReadTree
 
         private ProjectNode ReadTree(string name, Project project)
         {
@@ -1124,9 +1082,7 @@ namespace GameMaker.GM8Project
             }
         }
 
-        #endregion
 
-        #region Reader Methods
 
         protected override byte ReadByte()
         {
@@ -1136,9 +1092,7 @@ namespace GameMaker.GM8Project
                 return base.ReadByte();
         }
 
-        #endregion
 
-        #region Decompression Methods
 
         private void BeginDecompression()
         {
@@ -1173,8 +1127,6 @@ namespace GameMaker.GM8Project
             m_zlibStream = null;
         }
 
-        #endregion
 
-        #endregion
     }
 }

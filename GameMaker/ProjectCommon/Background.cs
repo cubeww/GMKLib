@@ -39,9 +39,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Background : Resource
     {
-        #region Members
 
-        #region Fields
 
         private DateTime m_lastChanged = DateTime.Now;
         private Image m_image = null;
@@ -60,9 +58,7 @@ namespace GameMaker.ProjectCommon
         private bool m_useVideoMemory = true;
         private bool m_loadOnlyOnUse = true;
 
-        #endregion
 
-        #region Properties
 
         public DateTime LastChanged
         {
@@ -157,8 +153,6 @@ namespace GameMaker.ProjectCommon
             set { m_loadOnlyOnUse = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

@@ -40,9 +40,7 @@ namespace GameMaker.ExtensionProject
 {
     public class Project
     {
-        #region Members
 
-        #region Fields
         
         private bool m_editable;
         private string m_name = "NewLibrary";
@@ -57,9 +55,7 @@ namespace GameMaker.ExtensionProject
         private List<string> m_uses = new List<string>(); // Extension packages required by this extension
         private List<IncludeFile> m_files = new List<IncludeFile>();
         
-        #endregion
 
-        #region Properties
 
         public bool Editable
         {
@@ -133,8 +129,6 @@ namespace GameMaker.ExtensionProject
         }
 
 
-        #endregion
 
-        #endregion
     }
 }

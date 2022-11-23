@@ -37,15 +37,11 @@ namespace GameMaker.ProjectCommon
 {
     public class Extension
     {
-        #region Members
 
-        #region Fields
 
         private string m_name = "";
 
-        #endregion
 
-        #region Properties
 
         public string Name
         {
@@ -53,8 +49,6 @@ namespace GameMaker.ProjectCommon
             set { m_name = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

@@ -39,9 +39,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Font : Resource
     {
-        #region Members
 
-        #region Fields
 
         private string m_fontName = "Arial";
         private DateTime m_lastChanged = DateTime.Now;
@@ -51,9 +49,7 @@ namespace GameMaker.ProjectCommon
         private bool m_bold;
         private bool m_italic;
 
-        #endregion
 
-        #region Properties
 
         public string FontName
         {
@@ -97,8 +93,6 @@ namespace GameMaker.ProjectCommon
             set { m_italic = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

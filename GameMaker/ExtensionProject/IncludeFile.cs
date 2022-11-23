@@ -41,9 +41,7 @@ namespace GameMaker.ExtensionProject
 {
     public class IncludeFile
     {
-        #region Members
 
-        #region Fields
 
         private string m_name;
         private string m_path;
@@ -53,9 +51,7 @@ namespace GameMaker.ExtensionProject
         private List<Function> m_functions = new List<Function>();
         private List<Constant> m_constants = new List<Constant>();
 
-        #endregion
 
-        #region Properties
 
         public string Name
         {
@@ -97,11 +93,8 @@ namespace GameMaker.ExtensionProject
             get { return m_constants; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         public IncludeFile()
         { }
@@ -115,6 +108,5 @@ namespace GameMaker.ExtensionProject
             m_finalizeCode = finalizeCode;
         }
 
-        #endregion
     }
 }

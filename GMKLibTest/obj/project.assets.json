@@ -187,11 +187,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\CSharp\\GameMaker\\GMKLibTest\\GMKLibTest.csproj",
+      "projectUniqueName": "D:\\Projects\\CSharp\\GMKLib\\GMKLibTest\\GMKLibTest.csproj",
       "projectName": "GMKLibTest",
-      "projectPath": "D:\\Projects\\CSharp\\GameMaker\\GMKLibTest\\GMKLibTest.csproj",
+      "projectPath": "D:\\Projects\\CSharp\\GMKLib\\GMKLibTest\\GMKLibTest.csproj",
       "packagesPath": "C:\\Users\\h7613\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\CSharp\\GameMaker\\GMKLibTest\\obj\\",
+      "outputPath": "D:\\Projects\\CSharp\\GMKLib\\GMKLibTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Users\\h7613\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
@@ -214,8 +214,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\GameMaker.csproj": {
-              "projectPath": "D:\\Projects\\CSharp\\GameMaker\\GameMaker\\GameMaker.csproj"
+            "D:\\Projects\\CSharp\\GMKLib\\GameMaker\\GameMaker.csproj": {
+              "projectPath": "D:\\Projects\\CSharp\\GMKLib\\GameMaker\\GameMaker.csproj"
             }
           }
         }

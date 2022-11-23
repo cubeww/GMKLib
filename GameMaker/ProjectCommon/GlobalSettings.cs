@@ -40,9 +40,7 @@ namespace GameMaker.ProjectCommon
 {
     public class GlobalSettings
     {
-        #region Members
 
-        #region Fields
 
         private int m_gameId;
         private byte[] m_guid;
@@ -93,9 +91,7 @@ namespace GameMaker.ProjectCommon
         private string m_description;
         private DateTime m_buildLastModified;
         private List<Constant> m_constants = new List<Constant>();
-        #endregion
 
-        #region Properties
 
         public int GameId
         {
@@ -389,9 +385,7 @@ namespace GameMaker.ProjectCommon
             internal set { m_constants = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Constant
@@ -428,9 +422,7 @@ namespace GameMaker.ProjectCommon
 
     public class Include
     {
-        #region Members
 
-        #region Fields
 
         private DateTime m_lastChanged = DateTime.Now;
         private string m_filename = string.Empty;
@@ -445,9 +437,7 @@ namespace GameMaker.ProjectCommon
         private bool m_freeMemory;
         private bool m_removeAtEnd;
 
-        #endregion
 
-        #region Properties
 
         public DateTime LastChanged
         {
@@ -522,8 +512,6 @@ namespace GameMaker.ProjectCommon
             set { m_removeAtEnd = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

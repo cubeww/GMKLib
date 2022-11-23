@@ -39,9 +39,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Action
     {
-        #region Members
 
-        #region Fields
 
         private bool m_relative;
         private bool m_not;
@@ -56,9 +54,7 @@ namespace GameMaker.ProjectCommon
         private ExecutionType m_executionType = ExecutionType.Function;
         private Argument[] m_arguments = null;
 
-        #endregion
 
-        #region Properties
 
         public bool Question
         {
@@ -132,24 +128,18 @@ namespace GameMaker.ProjectCommon
             set { m_arguments = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Argument
     {
-        #region Members
 
-        #region Fields
 
         private int m_resource = -1;
         private string m_value = string.Empty;
         private ArgumentType m_type = ArgumentType.Expression;
 
-        #endregion
 
-        #region Properties
 
         public int Resource
         {
@@ -169,8 +159,6 @@ namespace GameMaker.ProjectCommon
             set { m_type = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

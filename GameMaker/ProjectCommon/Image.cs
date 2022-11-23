@@ -39,17 +39,13 @@ namespace GameMaker.ProjectCommon
 {
     public class Image
     {
-        #region Members
 
-        #region Fields
 
         private int m_width = 32;
         private int m_height = 32;
         private byte[] m_data = null;
 
-        #endregion
 
-        #region Properties
 
         public int Width
         {
@@ -69,8 +65,6 @@ namespace GameMaker.ProjectCommon
             set { m_data = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

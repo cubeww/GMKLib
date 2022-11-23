@@ -45,14 +45,10 @@ namespace GameMaker.ActionLibrary
     /// </summary>
     public class Image
     {
-        #region Members
-        #region Fields
 
         private byte[] m_data;
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// Returns the image data as a <see cref="System.Byte[]"/>.
@@ -68,11 +64,8 @@ namespace GameMaker.ActionLibrary
             get { return m_data.Length; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         /// <summary>
         /// Creates an instance of <see cref="Image"/>.
@@ -130,6 +123,5 @@ namespace GameMaker.ActionLibrary
             stm.Close();
         }
 
-        #endregion
     }
 }

@@ -40,16 +40,12 @@ namespace GameMaker.IO
 {
     public class WriterBase
     {
-        #region Members
 
-        #region Fields
 
         private string m_fileName;
         protected MemoryStream m_writer = null;
 
-        #endregion
 
-        #region Properties
 
         public string FileName
         {
@@ -63,11 +59,8 @@ namespace GameMaker.IO
             set { m_writer.Position = value; }
         }
 
-        #endregion 
 
-        #endregion
 
-        #region Methods
 
         protected virtual void WriteByte(byte b)
         {
@@ -174,6 +167,5 @@ namespace GameMaker.IO
             m_writer = null;
         }
 
-        #endregion
     }
 }

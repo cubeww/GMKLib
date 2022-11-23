@@ -44,8 +44,6 @@ namespace GameMaker.ActionLibrary
     /// </summary>
     public class Action
     {
-        #region Members
-        #region Fields
 
         private string m_name;
         private int m_id;
@@ -66,8 +64,6 @@ namespace GameMaker.ActionLibrary
         private string m_function;
         private string m_code;
 
-        #endregion
-        #region Properties
 
         /// <summary>
         /// Gets or sets the name of the action
@@ -279,9 +275,6 @@ namespace GameMaker.ActionLibrary
             }
         }
 
-        #endregion
-        #endregion
-        #region Methods
 
         /// <summary>
         /// Instantiates an insance of <see cref="Action"/>
@@ -330,6 +323,5 @@ namespace GameMaker.ActionLibrary
         {
             return m_name;
         }
-        #endregion
     }
 }

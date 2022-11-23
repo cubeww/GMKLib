@@ -42,15 +42,11 @@ namespace GameMaker.GM7Project
 {
     public class ProjectWriter : WriterBase
     {
-        #region Members
 
-        #region Fields
 
         private Obfuscation m_obfuscation = new Obfuscation();
 
-        #endregion
 
-        #region Properties
 
 
         internal Obfuscation Obfuscation
@@ -69,11 +65,8 @@ namespace GameMaker.GM7Project
             set { m_obfuscation.Seed = value; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         public ProjectWriter()
         {
@@ -91,7 +84,6 @@ namespace GameMaker.GM7Project
             WriteBytes(array, 1);
         }
 
-        #region WriterBase
 
         protected override void WriteByte(byte b)
         {
@@ -102,8 +94,6 @@ namespace GameMaker.GM7Project
         }
 
 
-        #endregion
 
-        #endregion
     }
 }

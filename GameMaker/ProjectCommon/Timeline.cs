@@ -40,16 +40,12 @@ namespace GameMaker.ProjectCommon
 {
     public class Timeline : Resource
     {
-        #region Members
 
-        #region Fields
 
         private List<Moment> m_moments = null;
         private DateTime m_lastChanged = DateTime.Now;
 
-        #endregion
 
-        #region Properties
 
         public List<Moment> Moments
         {
@@ -63,23 +59,17 @@ namespace GameMaker.ProjectCommon
             set { m_lastChanged = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 
     public class Moment
     {
-        #region Members
 
-        #region Fields
 
         private List<Action> m_actions = null;
         private int m_stepIndex;
 
-        #endregion
 
-        #region Properties
 
         public List<Action> Actions
         {
@@ -93,8 +83,6 @@ namespace GameMaker.ProjectCommon
             set { m_stepIndex = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

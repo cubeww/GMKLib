@@ -40,9 +40,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Sprite : Resource
     {
-        #region Members
 
-        #region Fields
 
         private List<Image> m_subImages = new List<Image>();
         private BoundingBox m_boundingBoxMode = BoundingBox.Auto;
@@ -65,9 +63,7 @@ namespace GameMaker.ProjectCommon
         private bool m_loadOnlyOnUse = false;
         private bool m_useSeparateCollisionMasks = false;
         
-        #endregion
 
-        #region Properties
 
         public List<Image> SubImages
         {
@@ -189,8 +185,6 @@ namespace GameMaker.ProjectCommon
             set { m_useSeparateCollisionMasks = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

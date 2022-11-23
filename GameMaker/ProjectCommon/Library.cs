@@ -37,15 +37,11 @@ namespace GameMaker.ProjectCommon
 {
     public class Library
     {
-        #region Members
 
-        #region Fields
 
         private string m_code = string.Empty;
 
-        #endregion
 
-        #region Properties
 
         public string Code
         {
@@ -53,8 +49,6 @@ namespace GameMaker.ProjectCommon
             set { m_code = value; }
         }
 
-        #endregion 
 
-        #endregion
     }
 }

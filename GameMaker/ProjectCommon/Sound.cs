@@ -39,9 +39,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Sound : Resource
     {
-        #region Members
 
-        #region Fields
 
         private DateTime m_lastChanged = DateTime.Now;
         private SoundType m_soundType = SoundType.Normal;
@@ -57,9 +55,7 @@ namespace GameMaker.ProjectCommon
         private bool m_preload = true;
         private byte[] m_data = null;
 
-        #endregion
 
-        #region Properties
 
         public DateTime LastChanged
         {
@@ -139,8 +135,6 @@ namespace GameMaker.ProjectCommon
             set { m_data = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

@@ -40,16 +40,12 @@ namespace GameMaker.IO
 {
     public class ReaderBase
     {
-        #region Members
 
-        #region Fields
 
         private string m_fileName;
         protected MemoryStream m_reader = null;
 
-        #endregion
 
-        #region Properties
 
         public string FileName
         {
@@ -67,11 +63,8 @@ namespace GameMaker.IO
             get { return m_reader.Position; }
             set { m_reader.Position = value; }
         }
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         protected virtual long Seek(long offset, SeekOrigin origin)
         {
@@ -171,7 +164,6 @@ namespace GameMaker.IO
             return ret;
         }
 
-        #endregion
 
     }
 }

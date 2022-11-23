@@ -40,8 +40,6 @@ namespace GameMaker.ExtensionProject
 {
     public class Function
     {
-        #region Members
-        #region Fields
         private string m_name;
         private string m_externalName;
         private CallConvention m_callConvention;
@@ -49,8 +47,6 @@ namespace GameMaker.ExtensionProject
         private bool m_hidden;
         private List<ResultType> m_arguments = new List<ResultType>();
         private ResultType m_resultType;
-        #endregion
-        #region properties
 
         public string Name
         {
@@ -92,10 +88,7 @@ namespace GameMaker.ExtensionProject
             get { return m_resultType; }
             set { m_resultType = value; }
         }
-        #endregion
-        #endregion
 
-        #region Methods
         public Function()
         {}
 
@@ -115,6 +108,5 @@ namespace GameMaker.ExtensionProject
         }
 
 
-        #endregion
     }
 }

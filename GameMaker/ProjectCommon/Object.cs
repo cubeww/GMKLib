@@ -40,9 +40,7 @@ namespace GameMaker.ProjectCommon
 {
     public class Object : Resource
     {
-        #region Members
 
-        #region Fields
 
         private List<Event>[] m_events = new List<Event>[12];
         private DateTime m_lastChanged = DateTime.Now;
@@ -54,9 +52,7 @@ namespace GameMaker.ProjectCommon
         private bool m_visible;
         private bool m_persistent;
 
-        #endregion
 
-        #region Properties
         public List<Event>[] Events
         {
             get { return m_events; }
@@ -111,9 +107,7 @@ namespace GameMaker.ProjectCommon
             set { m_persistent = value; }
         }
 
-        #endregion
 
-        #endregion
 
         /// <summary>
         /// Constructs a new Game Maker object.

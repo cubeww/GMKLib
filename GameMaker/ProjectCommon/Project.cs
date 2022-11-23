@@ -40,16 +40,12 @@ namespace GameMaker.ProjectCommon
 {
     public class Project
     {
-        #region Members
 
-        #region Constants
 
         public const int InstanceIdMin = 100000;
         public const int TileIdMin = 10000000;
 
-        #endregion
 
-        #region Fields
 
         private int m_lastInstanceId = InstanceIdMin;
         private int m_lastTileId = TileIdMin;
@@ -73,9 +69,7 @@ namespace GameMaker.ProjectCommon
         private List<Library> m_libraries = new List<Library>();
         private List<int> m_roomOrder = new List<int>();
 
-        #endregion
 
-        #region Properties
 
         public int LastInstanceId
         {
@@ -197,13 +191,9 @@ namespace GameMaker.ProjectCommon
             set { m_roomOrder = value; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
-        #region RefactorIds
 
         public void RefactorIds()
         {
@@ -409,7 +399,6 @@ namespace GameMaker.ProjectCommon
             }
         }
 
-        #endregion
 
         public void RefactorInstanceIds()
         {
@@ -451,6 +440,5 @@ namespace GameMaker.ProjectCommon
             return rand.Next() % 100000000;
         }
 
-        #endregion
     }
 }

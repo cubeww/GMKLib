@@ -39,18 +39,14 @@ namespace GameMaker.ProjectCommon
 {
     public class Event
     {
-        #region Members
 
-        #region Fields
 
         private EventType m_mainType = EventType.None;
         private List<Action> m_actions = null;
         private int m_subtype;
         private int m_otherId;
 
-        #endregion
 
-        #region Properties
 
         public EventType MainType
         {
@@ -76,8 +72,6 @@ namespace GameMaker.ProjectCommon
             set { m_otherId = value; }
         }
 
-        #endregion
 
-        #endregion
     }
 }

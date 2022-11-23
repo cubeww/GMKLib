@@ -39,7 +39,6 @@ namespace GameMaker.ProjectCommon
 {
     public class GameInformation
     {
-        #region Fields
 
         private string m_information = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil Arial;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\f0\fs24}";
         private string m_formCaption = "Game Information";
@@ -55,9 +54,7 @@ namespace GameMaker.ProjectCommon
         private bool m_alwaysOnTop;
         private bool m_pauseGame = true;
 
-        #endregion
 
-        #region Properties
 
         public string Information
         {
@@ -137,6 +134,5 @@ namespace GameMaker.ProjectCommon
             set { m_pauseGame = value; }
         }
 
-        #endregion
     }
 }

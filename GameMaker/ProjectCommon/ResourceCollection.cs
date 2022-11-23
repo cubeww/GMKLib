@@ -42,18 +42,14 @@ namespace GameMaker.ProjectCommon
     public class ResourceCollection<T> : IList<T> where T : Resource
     {
 
-        #region Memebers
 
-        #region Fields
 
         private const int lastInstanceId = 100000;
         private const int lastTileId = 1000000;
         private List<T> m_items = new List<T>();
         private int m_lastId = -1;
 
-        #endregion
 
-        #region Properties
 
         public int LastId
         {
@@ -77,11 +73,8 @@ namespace GameMaker.ProjectCommon
             get { return false; }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Methods
 
         public void ResetIds()
         {
@@ -154,7 +147,6 @@ namespace GameMaker.ProjectCommon
             return m_items.ToArray();
         }
 
-        #endregion
 
     }
 }
