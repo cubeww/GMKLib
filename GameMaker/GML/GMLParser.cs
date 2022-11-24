@@ -250,7 +250,7 @@ namespace GameMaker.GML
                                 }
                                 if (_index >= _script.Length)
                                 {
-                                    ParseErrors.Add(new GMLError(eErrorKind.Warning_Unclosed_Comment, "unclosed comment (/*) at tend of script", null, _index));
+                                    ParseErrors.Add(new GMLError(ErrorKind.Warning_Unclosed_Comment, "unclosed comment (/*) at tend of script", null, _index));
                                 }
                                 else
                                 {
@@ -297,59 +297,59 @@ namespace GameMaker.GML
             switch (text)
             {
                 case "var":
-                    return new GMLToken(eToken.eVar, index, text);
+                    return new GMLToken(Token.Var, index, text);
                 case "if":
-                    return new GMLToken(eToken.eIf, index, text);
+                    return new GMLToken(Token.If, index, text);
                 case "end":
-                    return new GMLToken(eToken.eEnd, index, text);
+                    return new GMLToken(Token.End, index, text);
                 case "else":
-                    return new GMLToken(eToken.eElse, index, text);
+                    return new GMLToken(Token.Else, index, text);
                 case "while":
-                    return new GMLToken(eToken.eWhile, index, text);
+                    return new GMLToken(Token.While, index, text);
                 case "do":
-                    return new GMLToken(eToken.eDo, index, text);
+                    return new GMLToken(Token.Do, index, text);
                 case "for":
-                    return new GMLToken(eToken.eFor, index, text);
+                    return new GMLToken(Token.For, index, text);
                 case "begin":
-                    return new GMLToken(eToken.eBegin, index, text);
+                    return new GMLToken(Token.Begin, index, text);
                 case "then":
-                    return new GMLToken(eToken.eThen, index, text);
+                    return new GMLToken(Token.Then, index, text);
                 case "with":
-                    return new GMLToken(eToken.eWith, index, text);
+                    return new GMLToken(Token.With, index, text);
                 case "until":
-                    return new GMLToken(eToken.eUntil, index, text);
+                    return new GMLToken(Token.Until, index, text);
                 case "repeat":
-                    return new GMLToken(eToken.eRepeat, index, text);
+                    return new GMLToken(Token.Repeat, index, text);
                 case "exit":
-                    return new GMLToken(eToken.eExit, index, text);
+                    return new GMLToken(Token.Exit, index, text);
                 case "return":
-                    return new GMLToken(eToken.eReturn, index, text);
+                    return new GMLToken(Token.Return, index, text);
                 case "break":
-                    return new GMLToken(eToken.eBreak, index, text);
+                    return new GMLToken(Token.Break, index, text);
                 case "continue":
-                    return new GMLToken(eToken.eContinue, index, text);
+                    return new GMLToken(Token.Continue, index, text);
                 case "switch":
-                    return new GMLToken(eToken.eSwitch, index, text);
+                    return new GMLToken(Token.Switch, index, text);
                 case "case":
-                    return new GMLToken(eToken.eCase, index, text);
+                    return new GMLToken(Token.Case, index, text);
                 case "default":
-                    return new GMLToken(eToken.eDefault, index, text);
+                    return new GMLToken(Token.Default, index, text);
                 case "and":
-                    return new GMLToken(eToken.eAnd, index, text);
+                    return new GMLToken(Token.And, index, text);
                 case "or":
-                    return new GMLToken(eToken.eOr, index, text);
+                    return new GMLToken(Token.Or, index, text);
                 case "not":
-                    return new GMLToken(eToken.eNot, index, text);
+                    return new GMLToken(Token.Not, index, text);
                 case "div":
-                    return new GMLToken(eToken.eDiv, index, text);
+                    return new GMLToken(Token.Div, index, text);
                 case "mod":
-                    return new GMLToken(eToken.eMod, index, text);
+                    return new GMLToken(Token.Mod, index, text);
                 case "xor":
-                    return new GMLToken(eToken.eBitXor, index, text);
+                    return new GMLToken(Token.BitXor, index, text);
                 case "globalvar":
-                    return new GMLToken(eToken.eGlobalVar, index, text);
+                    return new GMLToken(Token.GlobalVar, index, text);
                 default:
-                    return new GMLToken(eToken.eName, index, text);
+                    return new GMLToken(Token.Name, index, text);
             }
         }
 
@@ -364,7 +364,7 @@ namespace GameMaker.GML
                 stringBuilder.Append(_script[_index]);
                 _index++;
             }
-            return new GMLToken(eToken.eNumber, index, stringBuilder.ToString());
+            return new GMLToken(Token.Number, index, stringBuilder.ToString());
         }
 
         private static GMLToken NextHex(string _script, ref int _index)
@@ -378,7 +378,7 @@ namespace GameMaker.GML
                 stringBuilder.Append(_script[_index]);
                 _index++;
             }
-            return new GMLToken(eToken.eNumber, index, stringBuilder.ToString());
+            return new GMLToken(Token.Number, index, stringBuilder.ToString());
         }
 
         private static GMLToken NextString(string _script, ref int _index)
@@ -396,7 +396,7 @@ namespace GameMaker.GML
             {
                 _index++;
             }
-            return new GMLToken(eToken.eString, index, stringBuilder.ToString());
+            return new GMLToken(Token.String, index, stringBuilder.ToString());
         }
 
         private static GMLToken NextToken(string _script, ref int _index)
@@ -404,7 +404,7 @@ namespace GameMaker.GML
             SkipWhitespace(_script, ref _index);
             if (_index >= _script.Length)
             {
-                return new GMLToken(eToken.eEOF, _index, string.Empty);
+                return new GMLToken(Token.EOF, _index, string.Empty);
             }
             char c = _script[_index];
             if (char.IsLetter(c) || c == '_')
@@ -430,74 +430,74 @@ namespace GameMaker.GML
                     switch (c)
                     {
                         case '{':
-                            return new GMLToken(eToken.eBegin, _index++, "{");
+                            return new GMLToken(Token.Begin, _index++, "{");
                         case '}':
-                            return new GMLToken(eToken.eEnd, _index++, "}");
+                            return new GMLToken(Token.End, _index++, "}");
                         case '(':
-                            return new GMLToken(eToken.eOpen, _index++, "(");
+                            return new GMLToken(Token.Open, _index++, "(");
                         case ')':
-                            return new GMLToken(eToken.eClose, _index++, ")");
+                            return new GMLToken(Token.Close, _index++, ")");
                         case '[':
-                            return new GMLToken(eToken.eArrayOpen, _index++, "[");
+                            return new GMLToken(Token.ArrayOpen, _index++, "[");
                         case ']':
-                            return new GMLToken(eToken.eArrayClose, _index++, "]");
+                            return new GMLToken(Token.ArrayClose, _index++, "]");
                         case ';':
-                            return new GMLToken(eToken.eSepStatement, _index++, ";");
+                            return new GMLToken(Token.SepStatement, _index++, ";");
                         case ',':
-                            return new GMLToken(eToken.eSepArgument, _index++, ",");
+                            return new GMLToken(Token.SepArgument, _index++, ",");
                         case '.':
-                            return new GMLToken(eToken.eDot, _index++, ".");
+                            return new GMLToken(Token.Dot, _index++, ".");
                         case '~':
-                            return new GMLToken(eToken.eBitNegate, _index++, "~");
+                            return new GMLToken(Token.BitNegate, _index++, "~");
                         case '!':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eNot, _index - 1, "!");
+                                return new GMLToken(Token.Not, _index - 1, "!");
                             }
-                            return new GMLToken(eToken.eNotEqual, _index++ - 2, "!=");
+                            return new GMLToken(Token.NotEqual, _index++ - 2, "!=");
                         case '=':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eAssign, _index - 1, "=");
+                                return new GMLToken(Token.Assign, _index - 1, "=");
                             }
-                            return new GMLToken(eToken.eEqual, _index++ - 2, "==");
+                            return new GMLToken(Token.Equal, _index++ - 2, "==");
                         case ':':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eLabel, _index - 1, ":");
+                                return new GMLToken(Token.Label, _index - 1, ":");
                             }
-                            return new GMLToken(eToken.eAssign, _index++ - 2, ":=");
+                            return new GMLToken(Token.Assign, _index++ - 2, ":=");
                         case '+':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.ePlus, _index - 1, "+");
+                                return new GMLToken(Token.Plus, _index - 1, "+");
                             }
-                            return new GMLToken(eToken.eAssignPlus, _index++ - 2, "+=");
+                            return new GMLToken(Token.AssignPlus, _index++ - 2, "+=");
                         case '-':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eMinus, _index - 1, "-");
+                                return new GMLToken(Token.Minus, _index - 1, "-");
                             }
-                            return new GMLToken(eToken.eAssignMinus, _index++ - 2, "-=");
+                            return new GMLToken(Token.AssignMinus, _index++ - 2, "-=");
                         case '*':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eTime, _index - 1, "*");
+                                return new GMLToken(Token.Time, _index - 1, "*");
                             }
-                            return new GMLToken(eToken.eAssignTimes, _index++ - 2, "*=");
+                            return new GMLToken(Token.AssignTimes, _index++ - 2, "*=");
                         case '/':
                             _index++;
                             if (_index >= _script.Length || _script[_index] != '=')
                             {
-                                return new GMLToken(eToken.eDivide, _index - 1, "/");
+                                return new GMLToken(Token.Divide, _index - 1, "/");
                             }
-                            return new GMLToken(eToken.eAssignDivide, _index++ - 2, "/=");
+                            return new GMLToken(Token.AssignDivide, _index++ - 2, "/=");
                         case '<':
                             if (_index + 1 < _script.Length)
                             {
@@ -505,18 +505,18 @@ namespace GameMaker.GML
                                 {
                                     case '>':
                                         _index += 2;
-                                        return new GMLToken(eToken.eNotEqual, _index, "<>");
+                                        return new GMLToken(Token.NotEqual, _index, "<>");
                                     case '<':
                                         _index += 2;
-                                        return new GMLToken(eToken.eBitShiftLeft, _index, "<<");
+                                        return new GMLToken(Token.BitShiftLeft, _index, "<<");
                                     case '=':
                                         _index += 2;
-                                        return new GMLToken(eToken.eLessEqual, _index, "<=");
+                                        return new GMLToken(Token.LessEqual, _index, "<=");
                                     default:
-                                        return new GMLToken(eToken.eLess, _index++, "<");
+                                        return new GMLToken(Token.Less, _index++, "<");
                                 }
                             }
-                            return new GMLToken(eToken.eLess, _index++, "<");
+                            return new GMLToken(Token.Less, _index++, "<");
                         case '>':
                             if (_index + 1 < _script.Length)
                             {
@@ -524,15 +524,15 @@ namespace GameMaker.GML
                                 {
                                     case '>':
                                         _index += 2;
-                                        return new GMLToken(eToken.eBitShiftRight, _index, ">>");
+                                        return new GMLToken(Token.BitShiftRight, _index, ">>");
                                     case '=':
                                         _index += 2;
-                                        return new GMLToken(eToken.eGreaterEqual, _index, ">=");
+                                        return new GMLToken(Token.GreaterEqual, _index, ">=");
                                     default:
-                                        return new GMLToken(eToken.eGreater, _index++, ">");
+                                        return new GMLToken(Token.Greater, _index++, ">");
                                 }
                             }
-                            return new GMLToken(eToken.eGreater, _index++, ">");
+                            return new GMLToken(Token.Greater, _index++, ">");
                         case '|':
                             if (_index + 1 < _script.Length)
                             {
@@ -540,15 +540,15 @@ namespace GameMaker.GML
                                 {
                                     case '|':
                                         _index += 2;
-                                        return new GMLToken(eToken.eOr, _index, "||");
+                                        return new GMLToken(Token.Or, _index, "||");
                                     case '=':
                                         _index += 2;
-                                        return new GMLToken(eToken.eAssignOr, _index, "|=");
+                                        return new GMLToken(Token.AssignOr, _index, "|=");
                                     default:
-                                        return new GMLToken(eToken.eBitOr, _index++, "|");
+                                        return new GMLToken(Token.BitOr, _index++, "|");
                                 }
                             }
-                            return new GMLToken(eToken.eBitOr, _index++, "|");
+                            return new GMLToken(Token.BitOr, _index++, "|");
                         case '&':
                             if (_index + 1 < _script.Length)
                             {
@@ -556,15 +556,15 @@ namespace GameMaker.GML
                                 {
                                     case '&':
                                         _index += 2;
-                                        return new GMLToken(eToken.eAnd, _index, "&&");
+                                        return new GMLToken(Token.And, _index, "&&");
                                     case '=':
                                         _index += 2;
-                                        return new GMLToken(eToken.eAssignAnd, _index, "&=");
+                                        return new GMLToken(Token.AssignAnd, _index, "&=");
                                     default:
-                                        return new GMLToken(eToken.eBitAnd, _index++, "&");
+                                        return new GMLToken(Token.BitAnd, _index++, "&");
                                 }
                             }
-                            return new GMLToken(eToken.eBitAnd, _index++, "&");
+                            return new GMLToken(Token.BitAnd, _index++, "&");
                         case '^':
                             if (_index + 1 < _script.Length)
                             {
@@ -572,17 +572,17 @@ namespace GameMaker.GML
                                 {
                                     case '^':
                                         _index += 2;
-                                        return new GMLToken(eToken.eXor, _index, "^^");
+                                        return new GMLToken(Token.Xor, _index, "^^");
                                     case '=':
                                         _index += 2;
-                                        return new GMLToken(eToken.eAssignXor, _index, "^=");
+                                        return new GMLToken(Token.AssignXor, _index, "^=");
                                     default:
-                                        return new GMLToken(eToken.eBitXor, _index++, "^");
+                                        return new GMLToken(Token.BitXor, _index++, "^");
                                 }
                             }
-                            return new GMLToken(eToken.eBitXor, _index++, "^");
+                            return new GMLToken(Token.BitXor, _index++, "^");
                         default:
-                            return new GMLToken(eToken.eError, _index, string.Empty);
+                            return new GMLToken(Token.Error, _index, string.Empty);
                     }
             }
         }
@@ -661,8 +661,8 @@ namespace GameMaker.GML
             gMLVariable.Get = _get;
             gMLVariable.Set = _set;
             gMLVariable.Pro = _pro;
-            gMLVariable.setFunction = _setFunc;
-            gMLVariable.getFunction = _getFunc;
+            gMLVariable.SetFunction = _setFunc;
+            gMLVariable.GetFunction = _getFunc;
             Builtins.Add(_name, gMLVariable);
         }
 
@@ -674,8 +674,8 @@ namespace GameMaker.GML
             gMLVariable.Get = _get;
             gMLVariable.Set = _set;
             gMLVariable.Pro = _pro;
-            gMLVariable.setFunction = null;
-            gMLVariable.getFunction = null;
+            gMLVariable.SetFunction = null;
+            gMLVariable.GetFunction = null;
             Builtins.Add(_name, gMLVariable);
             BuiltinArray.Add(_name, gMLVariable);
         }
@@ -688,8 +688,8 @@ namespace GameMaker.GML
             gMLVariable.Get = _get;
             gMLVariable.Set = _set;
             gMLVariable.Pro = _pro;
-            gMLVariable.setFunction = _setFunc;
-            gMLVariable.getFunction = _getFunc;
+            gMLVariable.SetFunction = _setFunc;
+            gMLVariable.GetFunction = _getFunc;
             BuiltinsLocal.Add(_name, gMLVariable);
         }
 
@@ -701,8 +701,8 @@ namespace GameMaker.GML
             gMLVariable.Get = _get;
             gMLVariable.Set = _set;
             gMLVariable.Pro = _pro;
-            gMLVariable.setFunction = null;
-            gMLVariable.getFunction = null;
+            gMLVariable.SetFunction = null;
+            gMLVariable.GetFunction = null;
             BuiltinsLocal.Add(_name, gMLVariable);
             BuiltinsLocalArray.Add(_name, gMLVariable);
         }
@@ -2672,7 +2672,7 @@ namespace GameMaker.GML
         private static bool Code_Constant_Find(string _name, out GMLValue _val)
         {
             _val = new GMLValue();
-            _val.Kind = eKind.eNumber;
+            _val.Kind = Kind.Number;
             int value = 0;
             ConstantCount.TryGetValue(_name, out value);
             ConstantCount[_name] = value + 1;
@@ -2699,7 +2699,7 @@ namespace GameMaker.GML
                     _val.ValueI = num;
                     return true;
                 }
-                _val.Kind = eKind.eConstant;
+                _val.Kind = Kind.Constant;
                 _val.ValueS = _name;
                 return true;
             }
@@ -2732,7 +2732,7 @@ namespace GameMaker.GML
             {
                 AddError(string.Format("unknown function or script {0}", _pass1[_index].Text), _script, _pass1[_index]);
             }
-            _pass2.Add(new GMLToken(eToken.eFunction, _pass1[_index], num));
+            _pass2.Add(new GMLToken(Token.Function, _pass1[_index], num));
         }
 
         private static void CreateNameToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
@@ -2741,11 +2741,11 @@ namespace GameMaker.GML
             if (!Code_Constant_Find(_pass1[_index].Text, out _val))
             {
                 int id = Code_Variable_Find(_pass1[_index].Text);
-                _pass2.Add(new GMLToken(eToken.eVariable, _pass1[_index], id));
+                _pass2.Add(new GMLToken(Token.Variable, _pass1[_index], id));
             }
             else
             {
-                _pass2.Add(new GMLToken(eToken.eConstant, _pass1[_index], 0, _val));
+                _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, _val));
             }
         }
 
@@ -2767,12 +2767,12 @@ namespace GameMaker.GML
                 }
                 gMLValue = new GMLValue(result);
             }
-            _pass2.Add(new GMLToken(eToken.eConstant, _pass1[_index], 0, gMLValue));
+            _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, gMLValue));
         }
 
         private static void CreateStringToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
         {
-            _pass2.Add(new GMLToken(eToken.eConstant, _pass1[_index], 0, new GMLValue(_pass1[_index].Text)));
+            _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, new GMLValue(_pass1[_index].Text)));
         }
 
         private static void CreateNormalToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
@@ -2785,64 +2785,64 @@ namespace GameMaker.GML
             int i = _index;
             switch (_pass2[i].Token)
             {
-                case eToken.eEOF:
+                case Token.EOF:
                     AddError("unexpected EOF encountered", Script, _pass2[i]);
                     break;
-                case eToken.eVar:
+                case Token.Var:
                     i = ParseVar(_pass3, _pass2, _index);
                     break;
-                case eToken.eGlobalVar:
+                case Token.GlobalVar:
                     i = ParseGlobalVar(_pass3, _pass2, _index);
                     break;
-                case eToken.eBegin:
+                case Token.Begin:
                     i = ParseBlock(_pass3, _pass2, _index);
                     break;
-                case eToken.eRepeat:
+                case Token.Repeat:
                     i = ParseRepeat(_pass3, _pass2, _index);
                     break;
-                case eToken.eIf:
+                case Token.If:
                     i = ParseIf(_pass3, _pass2, _index);
                     break;
-                case eToken.eWhile:
+                case Token.While:
                     i = ParseWhile(_pass3, _pass2, _index);
                     break;
-                case eToken.eFor:
+                case Token.For:
                     i = ParseFor(_pass3, _pass2, _index);
                     break;
-                case eToken.eDo:
+                case Token.Do:
                     i = ParseDo(_pass3, _pass2, _index);
                     break;
-                case eToken.eWith:
+                case Token.With:
                     i = ParseWith(_pass3, _pass2, _index);
                     break;
-                case eToken.eSwitch:
+                case Token.Switch:
                     i = ParseSwitch(_pass3, _pass2, _index);
                     break;
-                case eToken.eCase:
+                case Token.Case:
                     i = ParseCase(_pass3, _pass2, _index);
                     break;
-                case eToken.eDefault:
+                case Token.Default:
                     i = ParseDefault(_pass3, _pass2, _index);
                     break;
-                case eToken.eReturn:
+                case Token.Return:
                     i = ParseReturn(_pass3, _pass2, _index);
                     break;
-                case eToken.eFunction:
+                case Token.Function:
                     i = ParseFunction(_pass3, _pass2, _index);
                     break;
-                case eToken.eExit:
-                case eToken.eBreak:
-                case eToken.eContinue:
+                case Token.Exit:
+                case Token.Break:
+                case Token.Continue:
                     _pass3.Add(new GMLToken(_pass2[_index].Token, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value));
                     i++;
                     break;
                 default:
                     i = ParseAssignment(_pass3, _pass2, _index);
                     break;
-                case eToken.eSepStatement:
+                case Token.SepStatement:
                     break;
             }
-            for (; _pass2[i].Token == eToken.eSepStatement; i++)
+            for (; _pass2[i].Token == Token.SepStatement; i++)
             {
             }
             return i;
@@ -2850,19 +2850,19 @@ namespace GameMaker.GML
 
         private static int ParseVar(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eVar, _pass2[_index], 0);
+            GMLToken gMLToken = new GMLToken(Token.Var, _pass2[_index], 0);
             int num = _index + 1;
-            while (_pass2[num].Token == eToken.eVariable)
+            while (_pass2[num].Token == Token.Variable)
             {
                 if (_pass2[num].Id < 100000)
                 {
                     AddError("cannot redeclare a builtin varable", Script, _pass2[num]);
                 }
                 GMLToken gMLToken2 = new GMLToken(_pass2[num]);
-                gMLToken2.Token = eToken.eConstant;
+                gMLToken2.Token = Token.Constant;
                 gMLToken.Children.Add(gMLToken2);
                 num++;
-                if (_pass2[num].Token == eToken.eSepArgument)
+                if (_pass2[num].Token == Token.SepArgument)
                 {
                     num++;
                 }
@@ -2873,20 +2873,20 @@ namespace GameMaker.GML
 
         private static int ParseGlobalVar(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eGlobalVar, _pass2[_index], 0);
+            GMLToken gMLToken = new GMLToken(Token.GlobalVar, _pass2[_index], 0);
             int num = _index + 1;
-            while (_pass2[num].Token == eToken.eVariable)
+            while (_pass2[num].Token == Token.Variable)
             {
                 if (_pass2[num].Id < 100000)
                 {
                     AddError("cannot redeclare a builtin varable", Script, _pass2[num]);
                 }
                 GMLToken gMLToken2 = new GMLToken(_pass2[num]);
-                gMLToken2.Token = eToken.eConstant;
+                gMLToken2.Token = Token.Constant;
                 gMLToken.Children.Add(gMLToken2);
                 num++;
                 //GML2JavaScript.ms_globals[gMLToken2.Text] = gMLToken2.Text;
-                if (_pass2[num].Token == eToken.eSepArgument)
+                if (_pass2[num].Token == Token.SepArgument)
                 {
                     num++;
                 }
@@ -2900,11 +2900,11 @@ namespace GameMaker.GML
             int num = _index + 1;
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
-            while (!ParseError && _pass2[num].Token != eToken.eEOF && _pass2[num].Token != eToken.eEnd)
+            while (!ParseError && _pass2[num].Token != Token.EOF && _pass2[num].Token != Token.End)
             {
                 num = ParseStatement(gMLToken.Children, _pass2, num);
             }
-            if (_pass2[num].Token != eToken.eEnd)
+            if (_pass2[num].Token != Token.End)
             {
                 AddError("symbol } expected", Script, _pass2[num]);
             }
@@ -2929,12 +2929,12 @@ namespace GameMaker.GML
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             int num = ParseExpression1(gMLToken.Children, _pass2, _index + 1);
-            if (_pass2[num].Token == eToken.eThen)
+            if (_pass2[num].Token == Token.Then)
             {
                 num++;
             }
             num = ParseStatement(gMLToken.Children, _pass2, num);
-            if (_pass2[num].Token == eToken.eElse)
+            if (_pass2[num].Token == Token.Else)
             {
                 num = ParseStatement(gMLToken.Children, _pass2, num + 1);
             }
@@ -2947,7 +2947,7 @@ namespace GameMaker.GML
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             index = ParseExpression1(gMLToken.Children, _pass2, index);
-            if (_pass2[index].Token == eToken.eDo)
+            if (_pass2[index].Token == Token.Do)
             {
                 index++;
             }
@@ -2959,23 +2959,23 @@ namespace GameMaker.GML
             int num = _index + 1;
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
-            if (_pass2[num].Token != eToken.eOpen)
+            if (_pass2[num].Token != Token.Open)
             {
                 AddError("symbol ( expected", Script, _pass2[num]);
             }
             num++;
             num = ParseStatement(gMLToken.Children, _pass2, num);
-            if (_pass2[num].Token == eToken.eSepStatement)
+            if (_pass2[num].Token == Token.SepStatement)
             {
                 num++;
             }
             num = ParseExpression1(gMLToken.Children, _pass2, num);
-            if (_pass2[num].Token == eToken.eSepStatement)
+            if (_pass2[num].Token == Token.SepStatement)
             {
                 num++;
             }
             num = ParseStatement(gMLToken.Children, _pass2, num);
-            if (_pass2[num].Token != eToken.eClose)
+            if (_pass2[num].Token != Token.Close)
             {
                 AddError("Symbol ) expected", Script, _pass2[num]);
             }
@@ -2989,7 +2989,7 @@ namespace GameMaker.GML
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             index = ParseStatement(gMLToken.Children, _pass2, index);
-            if (_pass2[index].Token != eToken.eUntil)
+            if (_pass2[index].Token != Token.Until)
             {
                 AddError("keyword Until expected", Script, _pass2[index]);
             }
@@ -3002,7 +3002,7 @@ namespace GameMaker.GML
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             index = ParseExpression1(gMLToken.Children, _pass2, index);
-            if (_pass2[index].Token == eToken.eDo)
+            if (_pass2[index].Token == Token.Do)
             {
                 index++;
             }
@@ -3015,16 +3015,16 @@ namespace GameMaker.GML
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             index = ParseExpression1(gMLToken.Children, _pass2, index);
-            if (_pass2[index].Token != eToken.eBegin)
+            if (_pass2[index].Token != Token.Begin)
             {
                 AddError("Symbol { expected", Script, _pass2[index]);
             }
             index++;
-            while (_pass2[index].Token != eToken.eEnd && _pass2[index].Token != eToken.eEOF)
+            while (_pass2[index].Token != Token.End && _pass2[index].Token != Token.EOF)
             {
                 index = ParseStatement(gMLToken.Children, _pass2, index);
             }
-            if (_pass2[index].Token != eToken.eEnd)
+            if (_pass2[index].Token != Token.End)
             {
                 AddError("Symbol } expected", Script, _pass2[index]);
             }
@@ -3035,7 +3035,7 @@ namespace GameMaker.GML
         {
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             int num = ParseExpression1(gMLToken.Children, _pass2, _index + 1);
-            if (_pass2[num].Token != eToken.eLabel)
+            if (_pass2[num].Token != Token.Label)
             {
                 AddError("Symbol : expected", Script, _pass2[num]);
             }
@@ -3047,7 +3047,7 @@ namespace GameMaker.GML
         {
             int num = _index + 1;
             GMLToken item = new GMLToken(_pass2[_index]);
-            if (_pass2[num].Token != eToken.eLabel)
+            if (_pass2[num].Token != Token.Label)
             {
                 AddError("Symbol : expected", Script, _pass2[num]);
             }
@@ -3057,7 +3057,7 @@ namespace GameMaker.GML
 
         private static int ParseReturn(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eReturn, _pass2[_index], 0);
+            GMLToken gMLToken = new GMLToken(Token.Return, _pass2[_index], 0);
             int index = _index + 1;
             index = ParseExpression1(gMLToken.Children, _pass2, index);
             _pass3.Add(gMLToken);
@@ -3066,31 +3066,31 @@ namespace GameMaker.GML
 
         private static int ParseFunction(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            if (_pass2[_index].Token != eToken.eFunction)
+            if (_pass2[_index].Token != Token.Function)
             {
                 AddError("Function name expected", Script, _pass2[_index]);
             }
             GMLToken gMLToken = new GMLToken(_pass2[_index]);
             _pass3.Add(gMLToken);
             int num = _index + 1;
-            if (_pass2[num].Token != eToken.eOpen)
+            if (_pass2[num].Token != Token.Open)
             {
                 AddError("Symbol ( expected", Script, _pass2[num]);
             }
             num++;
-            while (!ParseError && _pass2[num].Token != eToken.eEOF && _pass2[num].Token != eToken.eClose)
+            while (!ParseError && _pass2[num].Token != Token.EOF && _pass2[num].Token != Token.Close)
             {
                 num = ParseExpression1(gMLToken.Children, _pass2, num);
-                if (_pass2[num].Token == eToken.eSepArgument)
+                if (_pass2[num].Token == Token.SepArgument)
                 {
                     num++;
                 }
-                else if (_pass2[num].Token != eToken.eClose)
+                else if (_pass2[num].Token != Token.Close)
                 {
                     AddError("Symbol , or ) expected", Script, _pass2[num]);
                 }
             }
-            if (_pass2[num].Token != eToken.eClose)
+            if (_pass2[num].Token != Token.Close)
             {
                 AddError("Symbol ) expected", Script, _pass2[num]);
             }
@@ -3103,19 +3103,19 @@ namespace GameMaker.GML
 
         private static int ParseAssignment(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eAssign, _pass2[_index], 0);
+            GMLToken gMLToken = new GMLToken(Token.Assign, _pass2[_index], 0);
             _pass3.Add(gMLToken);
             int num = ParseVariable2(gMLToken.Children, _pass2, _index);
             switch (_pass2[num].Token)
             {
-                case eToken.eAssign:
-                case eToken.eAssignPlus:
-                case eToken.eAssignMinus:
-                case eToken.eAssignTimes:
-                case eToken.eAssignDivide:
-                case eToken.eAssignOr:
-                case eToken.eAssignAnd:
-                case eToken.eAssignXor:
+                case Token.Assign:
+                case Token.AssignPlus:
+                case Token.AssignMinus:
+                case Token.AssignTimes:
+                case Token.AssignDivide:
+                case Token.AssignOr:
+                case Token.AssignAnd:
+                case Token.AssignXor:
                     gMLToken.Children.Add(_pass2[num]);
                     num = ParseExpression1(gMLToken.Children, _pass2, num + 1);
                     break;
@@ -3128,12 +3128,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression1(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseExpression2(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.eAnd || _pass2[num].Token == eToken.eOr || _pass2[num].Token == eToken.eXor)
+                while (_pass2[num].Token == Token.And || _pass2[num].Token == Token.Or || _pass2[num].Token == Token.Xor)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3153,12 +3153,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression2(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseExpression3(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.eLess || _pass2[num].Token == eToken.eLessEqual || _pass2[num].Token == eToken.eEqual || _pass2[num].Token == eToken.eNotEqual || _pass2[num].Token == eToken.eAssign || _pass2[num].Token == eToken.eGreater || _pass2[num].Token == eToken.eGreaterEqual)
+                while (_pass2[num].Token == Token.Less || _pass2[num].Token == Token.LessEqual || _pass2[num].Token == Token.Equal || _pass2[num].Token == Token.NotEqual || _pass2[num].Token == Token.Assign || _pass2[num].Token == Token.Greater || _pass2[num].Token == Token.GreaterEqual)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3178,12 +3178,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression3(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseExpression4(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.eBitOr || _pass2[num].Token == eToken.eBitAnd || _pass2[num].Token == eToken.eBitXor)
+                while (_pass2[num].Token == Token.BitOr || _pass2[num].Token == Token.BitAnd || _pass2[num].Token == Token.BitXor)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3203,12 +3203,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression4(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseExpression5(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.eBitShiftLeft || _pass2[num].Token == eToken.eBitShiftRight)
+                while (_pass2[num].Token == Token.BitShiftLeft || _pass2[num].Token == Token.BitShiftRight)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3228,12 +3228,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression5(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseExpression6(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.ePlus || _pass2[num].Token == eToken.eMinus)
+                while (_pass2[num].Token == Token.Plus || _pass2[num].Token == Token.Minus)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3253,12 +3253,12 @@ namespace GameMaker.GML
 
         private static int ParseExpression6(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            GMLToken gMLToken = new GMLToken(eToken.eBinary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
+            GMLToken gMLToken = new GMLToken(Token.Binary, _pass2[_index], _pass2[_index].Id, _pass2[_index].Value);
             int num = ParseVariable2(gMLToken.Children, _pass2, _index);
             if (!ParseError)
             {
                 bool flag = true;
-                while (_pass2[num].Token == eToken.eTime || _pass2[num].Token == eToken.eDivide || _pass2[num].Token == eToken.eDiv || _pass2[num].Token == eToken.eMod)
+                while (_pass2[num].Token == Token.Time || _pass2[num].Token == Token.Divide || _pass2[num].Token == Token.Div || _pass2[num].Token == Token.Mod)
                 {
                     flag = false;
                     gMLToken.Children.Add(_pass2[num]);
@@ -3282,12 +3282,12 @@ namespace GameMaker.GML
             int num = ParseTerm(list, _pass2, _index);
             if (!ParseError)
             {
-                if (_pass2[num].Token == eToken.eDot)
+                if (_pass2[num].Token == Token.Dot)
                 {
-                    GMLToken gMLToken = new GMLToken(eToken.eDot, _pass2[num], 0);
+                    GMLToken gMLToken = new GMLToken(Token.Dot, _pass2[num], 0);
                     gMLToken.Children.AddRange(list);
                     _pass3.Add(gMLToken);
-                    while (_pass2[num].Token == eToken.eDot)
+                    while (_pass2[num].Token == Token.Dot)
                     {
                         num = ParseVariable(gMLToken.Children, _pass2, num + 1);
                     }
@@ -3305,30 +3305,30 @@ namespace GameMaker.GML
             int num = _index;
             switch (_pass2[num].Token)
             {
-                case eToken.eFunction:
+                case Token.Function:
                     num = ParseFunction(_pass3, _pass2, num);
                     break;
-                case eToken.eConstant:
+                case Token.Constant:
                     _pass3.Add(_pass2[num]);
                     num++;
                     break;
-                case eToken.eOpen:
+                case Token.Open:
                     num = ParseExpression1(_pass3, _pass2, num + 1);
-                    if (_pass2[num].Token != eToken.eClose)
+                    if (_pass2[num].Token != Token.Close)
                     {
                         AddError("Symbol ) expected", Script, _pass2[num]);
                     }
                     num++;
                     break;
-                case eToken.eVariable:
+                case Token.Variable:
                     num = ParseVariable(_pass3, _pass2, num);
                     break;
-                case eToken.eNot:
-                case eToken.ePlus:
-                case eToken.eMinus:
-                case eToken.eBitNegate:
+                case Token.Not:
+                case Token.Plus:
+                case Token.Minus:
+                case Token.BitNegate:
                     {
-                        GMLToken gMLToken = new GMLToken(eToken.eUnary, _pass2[num], (int)_pass2[num].Token);
+                        GMLToken gMLToken = new GMLToken(Token.Unary, _pass2[num], (int)_pass2[num].Token);
                         num = ParseVariable2(gMLToken.Children, _pass2, num + 1);
                         _pass3.Add(gMLToken);
                         break;
@@ -3342,7 +3342,7 @@ namespace GameMaker.GML
 
         private static int ParseVariable(List<GMLToken> _pass3, List<GMLToken> _pass2, int _index)
         {
-            if (_pass2[_index].Token != eToken.eVariable)
+            if (_pass2[_index].Token != Token.Variable)
             {
                 AddError("variable name expected", Script, _pass2[_index]);
             }
@@ -3350,22 +3350,22 @@ namespace GameMaker.GML
             _pass3.Add(gMLToken);
             int num = _index + 1;
             GMLVariable value;
-            if (_pass2[num].Token == eToken.eArrayOpen)
+            if (_pass2[num].Token == Token.ArrayOpen)
             {
                 num++;
-                while (_pass2[num].Token != eToken.eArrayClose && _pass2[num].Token != eToken.eEOF)
+                while (_pass2[num].Token != Token.ArrayClose && _pass2[num].Token != Token.EOF)
                 {
                     num = ParseExpression1(gMLToken.Children, _pass2, num);
-                    if (_pass2[num].Token == eToken.eSepArgument)
+                    if (_pass2[num].Token == Token.SepArgument)
                     {
                         num++;
                     }
-                    else if (_pass2[num].Token != eToken.eArrayClose)
+                    else if (_pass2[num].Token != Token.ArrayClose)
                     {
                         AddError("symbol , or ] expected", Script, _pass2[num]);
                     }
                 }
-                if (_pass2[num].Token == eToken.eEOF)
+                if (_pass2[num].Token == Token.EOF)
                 {
                     AddError("symbol ] expected", Script, _pass2[num]);
                 }
@@ -3377,7 +3377,7 @@ namespace GameMaker.GML
             }
             else if (BuiltinArray.TryGetValue(gMLToken.Text, out value) || BuiltinsLocalArray.TryGetValue(gMLToken.Text, out value))
             {
-                GMLToken gMLToken2 = new GMLToken(eToken.eConstant, -1, "0");
+                GMLToken gMLToken2 = new GMLToken(Token.Constant, -1, "0");
                 gMLToken2.Value = new GMLValue(0.0);
                 gMLToken.Children.Add(gMLToken2);
             }
@@ -3405,26 +3405,26 @@ namespace GameMaker.GML
             {
                 GMLToken gMLToken = NextToken(_script, ref _index);
                 tokens.Add(gMLToken);
-                flag = (gMLToken.Token == eToken.eEOF);
+                flag = (gMLToken.Token == Token.EOF);
             }
 
             // Then, search the built-in function and project context, redirect the name token.
             List<GMLToken> newTokens = new List<GMLToken>();
             for (int i = 0; i < tokens.Count; i++)
             {
-                if (tokens[i].Token == eToken.eName && tokens[i + 1].Token == eToken.eOpen)
+                if (tokens[i].Token == Token.Name && tokens[i + 1].Token == Token.Open)
                 {
                     CreateFunctionsToken(_script, tokens, newTokens, i);
                 }
-                else if (tokens[i].Token == eToken.eName)
+                else if (tokens[i].Token == Token.Name)
                 {
                     CreateNameToken(_script, tokens, newTokens, i);
                 }
-                else if (tokens[i].Token == eToken.eNumber)
+                else if (tokens[i].Token == Token.Number)
                 {
                     CreateValueToken(_script, tokens, newTokens, i);
                 }
-                else if (tokens[i].Token == eToken.eString)
+                else if (tokens[i].Token == Token.String)
                 {
                     CreateStringToken(_script, tokens, newTokens, i);
                 }
@@ -3443,12 +3443,12 @@ namespace GameMaker.GML
             List<GMLToken> astTokens = new List<GMLToken>();
 
             int index = 0;
-            while (!ParseError && tokens[index].Token != eToken.eEOF)
+            while (!ParseError && tokens[index].Token != Token.EOF)
             {
                 index = ParseStatement(astTokens, tokens, index);
             }
 
-            GMLToken ast = new GMLToken(eToken.eBlock, 0, "");
+            GMLToken ast = new GMLToken(Token.Block, 0, "");
             ast.Children = astTokens;
             return ast;
         }

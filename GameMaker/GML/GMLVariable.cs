@@ -8,13 +8,13 @@ namespace GameMaker.GML
 			set;
 		}
 
-		public string setFunction
+		public string SetFunction
 		{
 			get;
 			set;
 		}
 
-		public string getFunction
+		public string GetFunction
 		{
 			get;
 			set;

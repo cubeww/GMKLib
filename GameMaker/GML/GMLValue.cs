@@ -2,7 +2,7 @@ namespace GameMaker.GML
 {
 	public class GMLValue
 	{
-		public eKind Kind
+		public Kind Kind
 		{
 			get;
 			set;
@@ -22,18 +22,18 @@ namespace GameMaker.GML
 
 		public GMLValue()
 		{
-			Kind = eKind.eNone;
+			Kind = Kind.None;
 		}
 
 		public GMLValue(double _value)
 		{
 			ValueI = _value;
-			Kind = eKind.eNumber;
+			Kind = Kind.Number;
 		}
 
 		public GMLValue(string _value)
 		{
-			Kind = eKind.eString;
+			Kind = Kind.String;
 			ValueS = _value;
 		}
 
@@ -46,7 +46,7 @@ namespace GameMaker.GML
 
 		public override string ToString()
 		{
-			return string.Format("[ kind={0:G}, val={1}]", Kind, (Kind == eKind.eNone) ? "none" : ((Kind == eKind.eNumber) ? ValueI.ToString() : ValueS.ToString()));
+			return string.Format("[ kind={0:G}, val={1}]", Kind, (Kind == Kind.None) ? "none" : ((Kind == Kind.Number) ? ValueI.ToString() : ValueS.ToString()));
 		}
 	}
 }

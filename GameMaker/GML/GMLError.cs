@@ -4,7 +4,7 @@ namespace GameMaker.GML
 {
 	public class GMLError : Exception
 	{
-		public eErrorKind Kind
+		public ErrorKind Kind
 		{
 			get;
 			set;
@@ -28,7 +28,7 @@ namespace GameMaker.GML
 			set;
 		}
 
-		public GMLError(eErrorKind _kind, string _error, GMLToken _token, params object[] _others)
+		public GMLError(ErrorKind _kind, string _error, GMLToken _token, params object[] _others)
 		{
 			Kind = _kind;
 			Error = _error;

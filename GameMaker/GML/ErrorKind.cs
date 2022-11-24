@@ -1,6 +1,6 @@
 namespace GameMaker.GML
 {
-	public enum eErrorKind
+	public enum ErrorKind
 	{
 		Warning = 0,
 		Warning_Unclosed_Comment = 1,
