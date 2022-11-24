@@ -13,7 +13,7 @@ namespace GMKLibTest
 
             foreach (var scr in project.Scripts)
             {
-                var token = GMLCompile.Compile(project, scr.Name, scr.Code, out var errors);
+                var token = GMLParser.Parse(project, scr.Name, scr.Code);
             }
         }
     }

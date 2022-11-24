@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace GameMaker.GML
 {
-	public class GMLError
+	public class GMLError : Exception
 	{
 		public eErrorKind Kind
 		{
