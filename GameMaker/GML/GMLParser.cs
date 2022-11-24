@@ -470,7 +470,7 @@ namespace GameMaker.GML
                 }
             }
             GMLFunction value = null;
-            if (!Builtin.Functions.TryGetValue(_name, out value))
+            if (!Builtins.Functions.TryGetValue(_name, out value))
             {
                 return -1;
             }
@@ -541,8 +541,8 @@ namespace GameMaker.GML
             _val = new GMLValue();
             _val.Kind = Kind.Number;
             int value = 0;
-            Builtin.ConstantCount.TryGetValue(_name, out value);
-            Builtin.ConstantCount[_name] = value + 1;
+            Builtins.ConstantCount.TryGetValue(_name, out value);
+            Builtins.ConstantCount[_name] = value + 1;
             int num = FindResourceIndexFromName(_name);
             if (num >= 0)
             {
@@ -571,7 +571,7 @@ namespace GameMaker.GML
                 return true;
             }
             double value3 = 0.0;
-            if (!Builtin.Constants.TryGetValue(_name, out value3))
+            if (!Builtins.Constants.TryGetValue(_name, out value3))
             {
                 return false;
             }
@@ -582,7 +582,7 @@ namespace GameMaker.GML
         private static int Code_Variable_Find(string _name)
         {
             GMLVariable value = null;
-            if (!Builtin.GlobalVariables.TryGetValue(_name, out value) && !Builtin.LocalVariables.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
+            if (!Builtins.GlobalVariables.TryGetValue(_name, out value) && !Builtins.LocalVariables.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
             {
                 value = new GMLVariable();
                 value.Name = _name;
@@ -1242,7 +1242,7 @@ namespace GameMaker.GML
                     AddError("only 1 or 2 dimensional arrays are supported", Script, _pass2[num]);
                 }
             }
-            else if (Builtin.GlobalArrays.TryGetValue(gMLToken.Text, out value) || Builtin.LocalArrays.TryGetValue(gMLToken.Text, out value))
+            else if (Builtins.GlobalArrays.TryGetValue(gMLToken.Text, out value) || Builtins.LocalArrays.TryGetValue(gMLToken.Text, out value))
             {
                 GMLToken gMLToken2 = new GMLToken(Token.Constant, -1, "0");
                 gMLToken2.Value = new GMLValue(0.0);
@@ -1253,7 +1253,7 @@ namespace GameMaker.GML
 
         static GMLParser()
         {
-            Builtin.AddBuiltin();
+            Builtins.AddBuiltins();
         }
         public static List<GMLToken> Tokenize(Project _assets, string _name, string _script)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameMaker.GML
 {
-    public static class Builtin
+    public static class Builtins
     {
         public const int clBlack = 0;
 
@@ -295,7 +295,7 @@ namespace GameMaker.GML
             LocalVariables.Add(_name, gMLVariable);
             LocalArrays.Add(_name, gMLVariable);
         }
-        public static void AddBuiltin()
+        public static void AddBuiltins()
         {
             AddBuiltinFunction("d3d_start", 0, 0, true);
             AddBuiltinFunction("d3d_end", 0, 0, true);
