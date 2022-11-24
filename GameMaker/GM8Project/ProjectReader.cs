@@ -56,8 +56,12 @@ namespace GameMaker.GM8Project
             Open(path);
         }
 
+        List<Task> Tasks { get; set; }
+
         public Project ReadProject()
         {
+            Tasks = new List<Task>();
+
             if (ReadInt() != 1234321)
                 throw new System.IO.IOException("Not a valid Game Maker Project");
 
@@ -67,6 +71,7 @@ namespace GameMaker.GM8Project
 
             Project project = new Project();
             project.FileVersion = (FileVersion)version;
+
             project.Settings = ReadSettings();
             project.Triggers = ReadTriggers();
             project.Settings.Constants = ReadConstants();
@@ -102,6 +107,8 @@ namespace GameMaker.GM8Project
             project.ProjectTree = ReadTree(SysPath.GetFileName(FileName), project);
             Close();
 
+            Task.WaitAll(Tasks.ToArray());
+
             return project;
         }
 
@@ -113,7 +120,8 @@ namespace GameMaker.GM8Project
             settings.Guid = ReadBytes(16);
             ReadInt();
 
-            var reader = ReadCompressed();
+            var reader = ReadChunk();
+            reader.Decompress();
             settings.Fullscreen = reader.ReadBool();
             settings.Interpolate = reader.ReadBool();
             settings.NoBorders = reader.ReadBool();
@@ -195,7 +203,8 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
+                var reader = ReadChunk();
+                reader.Decompress();
                 if (reader.ReadBool())
                 {
                     reader.ReadInt();
@@ -250,37 +259,41 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (reader.ReadBool() == false)
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    sounds.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Sound sound = new Sound();
+                    if (reader.ReadBool() == false)
+                    {
+                        sounds.LastId++;
+                        return;
+                    }
 
-                sound.Id = i;
+                    Sound sound = new Sound();
 
-                sound.Name = reader.ReadString();
-                sound.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    sound.Id = i;
 
-                reader.ReadInt();
+                    sound.Name = reader.ReadString();
+                    sound.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                sound.SoundType = (SoundType)reader.ReadInt();
+                    reader.ReadInt();
 
-                sound.FileType = reader.ReadString();
-                sound.FileName = reader.ReadString();
+                    sound.SoundType = (SoundType)reader.ReadInt();
 
-                if (reader.ReadBool())
-                    sound.Data = reader.ReadBytes(reader.ReadInt());
+                    sound.FileType = reader.ReadString();
+                    sound.FileName = reader.ReadString();
 
-                sound.Effects = reader.ReadInt();
-                sound.Volume = reader.ReadDouble();
-                sound.Pan = reader.ReadDouble();
-                sound.Preload = reader.ReadBool();
+                    if (reader.ReadBool())
+                        sound.Data = reader.ReadBytes(reader.ReadInt());
 
-                sounds.Add(sound);
+                    sound.Effects = reader.ReadInt();
+                    sound.Volume = reader.ReadDouble();
+                    sound.Pan = reader.ReadDouble();
+                    sound.Preload = reader.ReadBool();
+
+                    sounds.Add(sound);
+                }));
             }
 
             return sounds;
@@ -298,54 +311,57 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-                if (!reader.ReadBool())
-                {
-                    sprites.LastId++;
-                    continue;
-                }
-
-                Sprite sprite = new Sprite();
-                sprite.Id = i;
-                sprite.Name = reader.ReadString();
-
-                sprite.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
-
-                reader.ReadInt(); // no need for version
-
-                sprite.OriginX = reader.ReadInt();
-                sprite.OriginY = reader.ReadInt();
-
-                int imgCount = reader.ReadInt();
-
-                for (int j = 0; j < imgCount; j++)
-                {
-                    reader.ReadInt();
-
-                    int width = reader.ReadInt();
-                    int height = reader.ReadInt();
-
-                    if (width != 0 && height != 0)
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() => {
+                    reader.Decompress();
+                    if (!reader.ReadBool())
                     {
-                        Image image = new Image();
-                        image.Width = width;
-                        image.Height = height;
-
-                        image.Data = reader.ReadBytes(reader.ReadInt());
-                        sprite.SubImages.Add(image);
+                        sprites.LastId++;
+                        return;
                     }
-                }
 
-                sprite.ShapeMode = (Shape)reader.ReadInt();
-                sprite.AlphaTolerance = reader.ReadInt();
-                sprite.UseSeparateCollisionMasks = reader.ReadBool();
-                sprite.BoundingBoxMode = (BoundingBox)reader.ReadInt();
-                sprite.BoundingBoxLeft = reader.ReadInt();
-                sprite.BoundingBoxRight = reader.ReadInt();
-                sprite.BoundingBoxBottom = reader.ReadInt();
-                sprite.BoundingBoxTop = reader.ReadInt();
+                    Sprite sprite = new Sprite();
+                    sprite.Id = i;
+                    sprite.Name = reader.ReadString();
 
-                sprites.Add(sprite);
+                    sprite.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+
+                    reader.ReadInt(); // no need for version
+
+                    sprite.OriginX = reader.ReadInt();
+                    sprite.OriginY = reader.ReadInt();
+
+                    int imgCount = reader.ReadInt();
+
+                    for (int j = 0; j < imgCount; j++)
+                    {
+                        reader.ReadInt();
+
+                        int width = reader.ReadInt();
+                        int height = reader.ReadInt();
+
+                        if (width != 0 && height != 0)
+                        {
+                            Image image = new Image();
+                            image.Width = width;
+                            image.Height = height;
+
+                            image.Data = reader.ReadBytes(reader.ReadInt());
+                            sprite.SubImages.Add(image);
+                        }
+                    }
+
+                    sprite.ShapeMode = (Shape)reader.ReadInt();
+                    sprite.AlphaTolerance = reader.ReadInt();
+                    sprite.UseSeparateCollisionMasks = reader.ReadBool();
+                    sprite.BoundingBoxMode = (BoundingBox)reader.ReadInt();
+                    sprite.BoundingBoxLeft = reader.ReadInt();
+                    sprite.BoundingBoxRight = reader.ReadInt();
+                    sprite.BoundingBoxBottom = reader.ReadInt();
+                    sprite.BoundingBoxTop = reader.ReadInt();
+
+                    sprites.Add(sprite);
+                }));       
             }
 
             return sprites;
@@ -363,48 +379,52 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    backgrounds.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Background background = new Background();
+                    if (!reader.ReadBool())
+                    {
+                        backgrounds.LastId++;
+                        return;
+                    }
 
-                background.Id = i;
+                    Background background = new Background();
 
-                background.Name = reader.ReadString();
-                background.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    background.Id = i;
 
-                reader.ReadInt();
+                    background.Name = reader.ReadString();
+                    background.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                background.UseAsTileSet = reader.ReadBool();
-                background.TileWidth = reader.ReadInt();
-                background.TileHeight = reader.ReadInt();
-                background.HorizontalOffset = reader.ReadInt();
-                background.VerticalOffset = reader.ReadInt();
-                background.HorizontalSeparation = reader.ReadInt();
-                background.VerticalSeparation = reader.ReadInt();
+                    reader.ReadInt();
 
-                reader.ReadInt();
+                    background.UseAsTileSet = reader.ReadBool();
+                    background.TileWidth = reader.ReadInt();
+                    background.TileHeight = reader.ReadInt();
+                    background.HorizontalOffset = reader.ReadInt();
+                    background.VerticalOffset = reader.ReadInt();
+                    background.HorizontalSeparation = reader.ReadInt();
+                    background.VerticalSeparation = reader.ReadInt();
 
-                int width = reader.ReadInt();
-                int height = reader.ReadInt();
+                    reader.ReadInt();
 
-                if (width != 0 && height != 0)
-                {
-                    Image image = new Image();
+                    int width = reader.ReadInt();
+                    int height = reader.ReadInt();
 
-                    image.Width = width;
-                    image.Height = height;
-                    image.Data = reader.ReadBytes(reader.ReadInt());
+                    if (width != 0 && height != 0)
+                    {
+                        Image image = new Image();
 
-                    background.Image = image;
-                }
+                        image.Width = width;
+                        image.Height = height;
+                        image.Data = reader.ReadBytes(reader.ReadInt());
 
-                backgrounds.Add(background);
+                        background.Image = image;
+                    }
+
+                    backgrounds.Add(background);
+                }));
             }
 
             return backgrounds;
@@ -422,43 +442,47 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    paths.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                GMPath path = new GMPath();
-                path.Id = i;
+                    if (!reader.ReadBool())
+                    {
+                        paths.LastId++;
+                        return;
+                    }
 
-                path.Name = reader.ReadString();
-                path.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    GMPath path = new GMPath();
+                    path.Id = i;
 
-                reader.ReadInt();
-                path.Smooth = reader.ReadBool();
-                path.Closed = reader.ReadBool();
-                path.Precision = reader.ReadInt();
-                path.RoomId = reader.ReadInt();
-                path.SnapX = reader.ReadInt();
-                path.SnapY = reader.ReadInt();
+                    path.Name = reader.ReadString();
+                    path.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                path.Points = new List<Point>();
+                    reader.ReadInt();
+                    path.Smooth = reader.ReadBool();
+                    path.Closed = reader.ReadBool();
+                    path.Precision = reader.ReadInt();
+                    path.RoomId = reader.ReadInt();
+                    path.SnapX = reader.ReadInt();
+                    path.SnapY = reader.ReadInt();
 
-                int pointCount = reader.ReadInt();
+                    path.Points = new List<Point>();
 
-                for (int j = 0; j < pointCount; j++)
-                {
-                    Point point = new Point();
-                    point.X = reader.ReadDouble();
-                    point.Y = reader.ReadDouble();
-                    point.Speed = reader.ReadDouble();
+                    int pointCount = reader.ReadInt();
 
-                    path.Points.Add(point);
-                }
+                    for (int j = 0; j < pointCount; j++)
+                    {
+                        Point point = new Point();
+                        point.X = reader.ReadDouble();
+                        point.Y = reader.ReadDouble();
+                        point.Speed = reader.ReadDouble();
 
-                paths.Add(path);
+                        path.Points.Add(point);
+                    }
+
+                    paths.Add(path);
+                }));
             }
 
             return paths;
@@ -476,27 +500,31 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    scripts.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Script script = new Script();
+                    if (!reader.ReadBool())
+                    {
+                        scripts.LastId++;
+                        return;
+                    }
 
-                script.Id = i;
+                    Script script = new Script();
 
-                script.Name = reader.ReadString();
+                    script.Id = i;
 
-                script.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    script.Name = reader.ReadString();
 
-                reader.ReadInt();
+                    script.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                script.Code = reader.ReadString();
+                    reader.ReadInt();
 
-                scripts.Add(script);
+                    script.Code = reader.ReadString();
+
+                    scripts.Add(script);
+                }));
             }
 
             return scripts;
@@ -514,32 +542,36 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    fonts.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Font font = new Font();
+                    if (!reader.ReadBool())
+                    {
+                        fonts.LastId++;
+                        return;
+                    }
 
-                font.Id = i;
+                    Font font = new Font();
 
-                font.Name = reader.ReadString();
+                    font.Id = i;
 
-                font.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    font.Name = reader.ReadString();
 
-                reader.ReadInt(); // Version
+                    font.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                font.FontName = reader.ReadString();
-                font.Size = reader.ReadInt();
-                font.Bold = reader.ReadBool();
-                font.Italic = reader.ReadBool();
-                font.CharacterRangeMin = reader.ReadInt();
-                font.CharacterRangeMax = reader.ReadInt();
+                    reader.ReadInt(); // Version
 
-                fonts.Add(font);
+                    font.FontName = reader.ReadString();
+                    font.Size = reader.ReadInt();
+                    font.Bold = reader.ReadBool();
+                    font.Italic = reader.ReadBool();
+                    font.CharacterRangeMin = reader.ReadInt();
+                    font.CharacterRangeMax = reader.ReadInt();
+
+                    fonts.Add(font);
+                }));
             }
 
             return fonts;
@@ -556,38 +588,42 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    timelines.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Timeline timeline = new Timeline();
+                    if (!reader.ReadBool())
+                    {
+                        timelines.LastId++;
+                        return;
+                    }
 
-                timeline.Id = i;
-                timeline.Name = reader.ReadString();
-                timeline.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+                    Timeline timeline = new Timeline();
 
-                reader.ReadInt();
+                    timeline.Id = i;
+                    timeline.Name = reader.ReadString();
+                    timeline.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                timeline.Moments = new List<Moment>();
+                    reader.ReadInt();
 
-                int momentCount = reader.ReadInt();
+                    timeline.Moments = new List<Moment>();
 
-                for (int j = 0; j < momentCount; j++)
-                {
-                    Moment moment = new Moment();
+                    int momentCount = reader.ReadInt();
 
-                    moment.StepIndex = reader.ReadInt();
+                    for (int j = 0; j < momentCount; j++)
+                    {
+                        Moment moment = new Moment();
 
-                    moment.Actions = ReadActions(reader);
+                        moment.StepIndex = reader.ReadInt();
 
-                    timeline.Moments.Add(moment);
-                }
+                        moment.Actions = ReadActions(reader);
 
-                timelines.Add(timeline);
+                        timeline.Moments.Add(moment);
+                    }
+
+                    timelines.Add(timeline);
+                }));
             }
             return timelines;
         }
@@ -604,65 +640,69 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    objects.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Object obj = new Object();
-
-                obj.Id = i;
-                obj.Name = reader.ReadString();
-
-                obj.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
-
-                reader.ReadInt();
-
-                obj.SpriteId = reader.ReadInt();
-                obj.Solid = reader.ReadBool();
-                obj.Visible = reader.ReadBool();
-                obj.Depth = reader.ReadInt();
-                obj.Persistent = reader.ReadBool();
-                obj.Parent = reader.ReadInt();
-                obj.Mask = reader.ReadInt();
-
-                reader.ReadInt();
-
-                for (int j = 0; j < 12; j++)
-                {
-                    bool done = false;
-                    while (!done)
+                    if (!reader.ReadBool())
                     {
-                        int eventNum = reader.ReadInt();
-
-                        // If the event exists
-                        if (eventNum != -1)
-                        {
-                            // Create new event
-                            Event ev = new Event();
-
-                            // Set type of event
-                            ev.MainType = (EventType)(j);
-
-                            // If a collision type of event set other object id.
-                            if (ev.MainType == EventType.Collision)
-                                ev.OtherId = eventNum;
-                            else
-                                ev.Subtype = eventNum;
-
-                            // ReadEventActions
-                            ev.Actions = ReadActions(reader);
-                            obj.Events[j].Add(ev);
-                        }
-                        else
-                            done = true;
+                        objects.LastId++;
+                        return;
                     }
-                }
 
-                objects.Add(obj);
+                    Object obj = new Object();
+
+                    obj.Id = i;
+                    obj.Name = reader.ReadString();
+
+                    obj.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
+
+                    reader.ReadInt();
+
+                    obj.SpriteId = reader.ReadInt();
+                    obj.Solid = reader.ReadBool();
+                    obj.Visible = reader.ReadBool();
+                    obj.Depth = reader.ReadInt();
+                    obj.Persistent = reader.ReadBool();
+                    obj.Parent = reader.ReadInt();
+                    obj.Mask = reader.ReadInt();
+
+                    reader.ReadInt();
+
+                    for (int j = 0; j < 12; j++)
+                    {
+                        bool done = false;
+                        while (!done)
+                        {
+                            int eventNum = reader.ReadInt();
+
+                            // If the event exists
+                            if (eventNum != -1)
+                            {
+                                // Create new event
+                                Event ev = new Event();
+
+                                // Set type of event
+                                ev.MainType = (EventType)(j);
+
+                                // If a collision type of event set other object id.
+                                if (ev.MainType == EventType.Collision)
+                                    ev.OtherId = eventNum;
+                                else
+                                    ev.Subtype = eventNum;
+
+                                // ReadEventActions
+                                ev.Actions = ReadActions(reader);
+                                obj.Events[j].Add(ev);
+                            }
+                            else
+                                done = true;
+                        }
+                    }
+
+                    objects.Add(obj);
+                }));
             }
 
             return objects;
@@ -680,139 +720,143 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
-
-                if (!reader.ReadBool())
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    rooms.LastId++;
-                    continue;
-                }
+                    reader.Decompress();
 
-                Room room = new Room();
-
-                room.Id = i;
-                room.Name = reader.ReadString();
-
-                room.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
-
-                reader.ReadInt();
-
-                room.Caption = reader.ReadString();
-                room.Width = reader.ReadInt();
-                room.Height = reader.ReadInt();
-                room.SnapY = reader.ReadInt();
-                room.SnapX = reader.ReadInt();
-                room.IsometricGrid = reader.ReadBool();
-
-                room.Speed = reader.ReadInt();
-                room.Persistent = reader.ReadBool();
-                room.BackgroundColor = reader.ReadInt();
-                room.DrawBackgroundColor = reader.ReadBool();
-                room.CreationCode = reader.ReadString();
-
-                room.Parallaxs = new Parallax[reader.ReadInt()];
-
-                for (int j = 0; j < room.Parallaxs.Length; j++)
-                {
-                    room.Parallaxs[j] = new Parallax();
-
-                    room.Parallaxs[j].Visible = reader.ReadBool();
-                    room.Parallaxs[j].Foreground = reader.ReadBool();
-                    room.Parallaxs[j].BackgroundId = reader.ReadInt();
-                    room.Parallaxs[j].X = reader.ReadInt();
-                    room.Parallaxs[j].Y = reader.ReadInt();
-                    room.Parallaxs[j].TileHorizontally = reader.ReadBool();
-                    room.Parallaxs[j].TileVertically = reader.ReadBool();
-                    room.Parallaxs[j].HorizontalSpeed = reader.ReadInt();
-                    room.Parallaxs[j].VerticalSpeed = reader.ReadInt();
-
-                    room.Parallaxs[j].Stretch = reader.ReadBool();
-                }
-
-                room.EnableViews = reader.ReadBool();
-
-                room.Views = new View[reader.ReadInt()];
-
-                for (int j = 0; j < room.Views.Length; j++)
-                {
-                    room.Views[j] = new View();
-
-                    room.Views[j].Visible = reader.ReadBool();
-                    room.Views[j].ViewX = reader.ReadInt();
-                    room.Views[j].ViewY = reader.ReadInt();
-                    room.Views[j].ViewWidth = reader.ReadInt();
-                    room.Views[j].ViewHeight = reader.ReadInt();
-                    room.Views[j].PortX = reader.ReadInt();
-                    room.Views[j].PortY = reader.ReadInt();
-                    room.Views[j].PortWidth = reader.ReadInt();
-                    room.Views[j].PortHeight = reader.ReadInt();
-
-                    room.Views[j].HorizontalBorder = reader.ReadInt();
-                    room.Views[j].VerticalBorder = reader.ReadInt();
-                    room.Views[j].HorizontalSpeed = reader.ReadInt();
-                    room.Views[j].VerticalSpeed = reader.ReadInt();
-                    room.Views[j].FollowObject = reader.ReadInt();
-                }
-
-
-                int instanceCount = reader.ReadInt();
-                for (int j = 0; j < instanceCount; j++)
-                {
-                    Instance instance = new Instance();
-
-                    instance.X = reader.ReadInt();
-                    instance.Y = reader.ReadInt();
-                    instance.ObjectId = reader.ReadInt();
-                    instance.Id = reader.ReadInt();
-
-                    instance.CreationCode = reader.ReadString();
-                    instance.Locked = reader.ReadBool();
-
-                    Object obj = objects.Find(delegate (Object o) { return o.Id == instance.ObjectId; });
-
-                    if (obj != null)
+                    if (!reader.ReadBool())
                     {
-                        instance.Name = obj.Name;
-                        instance.Depth = obj.Depth;
+                        rooms.LastId++;
+                        return;
                     }
 
-                    room.Instances.Add(instance);
-                }
+                    Room room = new Room();
 
-                int tileCount = reader.ReadInt();
-                for (int j = 0; j < tileCount; j++)
-                {
-                    Tile tile = new Tile();
+                    room.Id = i;
+                    room.Name = reader.ReadString();
 
-                    tile.X = reader.ReadInt();
-                    tile.Y = reader.ReadInt();
-                    tile.BackgroundId = reader.ReadInt();
-                    tile.BackgroundX = reader.ReadInt();
-                    tile.BackgroundY = reader.ReadInt();
-                    tile.Width = reader.ReadInt();
-                    tile.Height = reader.ReadInt();
-                    tile.Depth = reader.ReadInt();
-                    tile.Locked = reader.ReadBool();
+                    room.LastChanged = System.DateTime.FromOADate(reader.ReadDouble());
 
-                    room.Tiles.Add(tile);
-                }
+                    reader.ReadInt();
 
-                room.RememberWindowSize = reader.ReadBool();
-                room.EditorWidth = reader.ReadInt();
-                room.EditorHeight = reader.ReadInt();
-                room.ShowGrid = reader.ReadBool();
-                room.ShowObjects = reader.ReadBool();
-                room.ShowTiles = reader.ReadBool();
-                room.ShowBackgrounds = reader.ReadBool();
-                room.ShowForegrounds = reader.ReadBool();
-                room.ShowViews = reader.ReadBool();
-                room.DeleteUnderlyingObjects = reader.ReadBool();
-                room.DeleteUnderlyingTiles = reader.ReadBool();
-                room.CurrentTab = (TabSetting)reader.ReadInt();
-                room.ScrollBarX = reader.ReadInt();
-                room.ScrollBarY = reader.ReadInt();
+                    room.Caption = reader.ReadString();
+                    room.Width = reader.ReadInt();
+                    room.Height = reader.ReadInt();
+                    room.SnapY = reader.ReadInt();
+                    room.SnapX = reader.ReadInt();
+                    room.IsometricGrid = reader.ReadBool();
 
-                rooms.Add(room);
+                    room.Speed = reader.ReadInt();
+                    room.Persistent = reader.ReadBool();
+                    room.BackgroundColor = reader.ReadInt();
+                    room.DrawBackgroundColor = reader.ReadBool();
+                    room.CreationCode = reader.ReadString();
+
+                    room.Parallaxs = new Parallax[reader.ReadInt()];
+
+                    for (int j = 0; j < room.Parallaxs.Length; j++)
+                    {
+                        room.Parallaxs[j] = new Parallax();
+
+                        room.Parallaxs[j].Visible = reader.ReadBool();
+                        room.Parallaxs[j].Foreground = reader.ReadBool();
+                        room.Parallaxs[j].BackgroundId = reader.ReadInt();
+                        room.Parallaxs[j].X = reader.ReadInt();
+                        room.Parallaxs[j].Y = reader.ReadInt();
+                        room.Parallaxs[j].TileHorizontally = reader.ReadBool();
+                        room.Parallaxs[j].TileVertically = reader.ReadBool();
+                        room.Parallaxs[j].HorizontalSpeed = reader.ReadInt();
+                        room.Parallaxs[j].VerticalSpeed = reader.ReadInt();
+
+                        room.Parallaxs[j].Stretch = reader.ReadBool();
+                    }
+
+                    room.EnableViews = reader.ReadBool();
+
+                    room.Views = new View[reader.ReadInt()];
+
+                    for (int j = 0; j < room.Views.Length; j++)
+                    {
+                        room.Views[j] = new View();
+
+                        room.Views[j].Visible = reader.ReadBool();
+                        room.Views[j].ViewX = reader.ReadInt();
+                        room.Views[j].ViewY = reader.ReadInt();
+                        room.Views[j].ViewWidth = reader.ReadInt();
+                        room.Views[j].ViewHeight = reader.ReadInt();
+                        room.Views[j].PortX = reader.ReadInt();
+                        room.Views[j].PortY = reader.ReadInt();
+                        room.Views[j].PortWidth = reader.ReadInt();
+                        room.Views[j].PortHeight = reader.ReadInt();
+
+                        room.Views[j].HorizontalBorder = reader.ReadInt();
+                        room.Views[j].VerticalBorder = reader.ReadInt();
+                        room.Views[j].HorizontalSpeed = reader.ReadInt();
+                        room.Views[j].VerticalSpeed = reader.ReadInt();
+                        room.Views[j].FollowObject = reader.ReadInt();
+                    }
+
+
+                    int instanceCount = reader.ReadInt();
+                    for (int j = 0; j < instanceCount; j++)
+                    {
+                        Instance instance = new Instance();
+
+                        instance.X = reader.ReadInt();
+                        instance.Y = reader.ReadInt();
+                        instance.ObjectId = reader.ReadInt();
+                        instance.Id = reader.ReadInt();
+
+                        instance.CreationCode = reader.ReadString();
+                        instance.Locked = reader.ReadBool();
+
+                        Object obj = objects.Find(delegate (Object o) { return o.Id == instance.ObjectId; });
+
+                        if (obj != null)
+                        {
+                            instance.Name = obj.Name;
+                            instance.Depth = obj.Depth;
+                        }
+
+                        room.Instances.Add(instance);
+                    }
+
+                    int tileCount = reader.ReadInt();
+                    for (int j = 0; j < tileCount; j++)
+                    {
+                        Tile tile = new Tile();
+
+                        tile.X = reader.ReadInt();
+                        tile.Y = reader.ReadInt();
+                        tile.BackgroundId = reader.ReadInt();
+                        tile.BackgroundX = reader.ReadInt();
+                        tile.BackgroundY = reader.ReadInt();
+                        tile.Width = reader.ReadInt();
+                        tile.Height = reader.ReadInt();
+                        tile.Depth = reader.ReadInt();
+                        tile.Locked = reader.ReadBool();
+
+                        room.Tiles.Add(tile);
+                    }
+
+                    room.RememberWindowSize = reader.ReadBool();
+                    room.EditorWidth = reader.ReadInt();
+                    room.EditorHeight = reader.ReadInt();
+                    room.ShowGrid = reader.ReadBool();
+                    room.ShowObjects = reader.ReadBool();
+                    room.ShowTiles = reader.ReadBool();
+                    room.ShowBackgrounds = reader.ReadBool();
+                    room.ShowForegrounds = reader.ReadBool();
+                    room.ShowViews = reader.ReadBool();
+                    room.DeleteUnderlyingObjects = reader.ReadBool();
+                    room.DeleteUnderlyingTiles = reader.ReadBool();
+                    room.CurrentTab = (TabSetting)reader.ReadInt();
+                    room.ScrollBarX = reader.ReadInt();
+                    room.ScrollBarY = reader.ReadInt();
+
+                    rooms.Add(room);
+                }));
             }
 
             return rooms;
@@ -898,30 +942,34 @@ namespace GameMaker.GM8Project
 
             for (int i = 0; i < count; i++)
             {
-                var reader = ReadCompressed();
+                var reader = ReadChunk();
+                Tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    reader.Decompress();
 
-                Include include = new Include();
+                    Include include = new Include();
 
-                include.LastChanged = System.DateTime.FromOADate(reader.ReadDouble()); // This is a compressed read.
+                    include.LastChanged = System.DateTime.FromOADate(reader.ReadDouble()); // This is a compressed read.
 
-                reader.ReadInt();
+                    reader.ReadInt();
 
-                include.Filename = reader.ReadString();
-                include.FilePath = reader.ReadString();
-                include.OriginalFile = reader.ReadBool();
-                include.OriginalFileSize = reader.ReadInt();
-                include.StoreInEditable = reader.ReadBool();
+                    include.Filename = reader.ReadString();
+                    include.FilePath = reader.ReadString();
+                    include.OriginalFile = reader.ReadBool();
+                    include.OriginalFileSize = reader.ReadInt();
+                    include.StoreInEditable = reader.ReadBool();
 
-                if (include.StoreInEditable)
-                    include.FileData = reader.ReadBytes(reader.ReadInt());
+                    if (include.StoreInEditable)
+                        include.FileData = reader.ReadBytes(reader.ReadInt());
 
-                include.ExportMode = (Export)(reader.ReadInt());
-                include.ExportFolder = reader.ReadString();
-                include.Overwrite = reader.ReadBool();
-                include.FreeMemory = reader.ReadBool();
-                include.RemoveAtEnd = reader.ReadBool();
+                    include.ExportMode = (Export)(reader.ReadInt());
+                    include.ExportFolder = reader.ReadString();
+                    include.Overwrite = reader.ReadBool();
+                    include.FreeMemory = reader.ReadBool();
+                    include.RemoveAtEnd = reader.ReadBool();
 
-                includes.Add(include);
+                    includes.Add(include);
+                }));
             }
 
             return includes;
@@ -955,7 +1003,8 @@ namespace GameMaker.GM8Project
         {
             ReadInt();
 
-            var reader = ReadCompressed();
+            var reader = ReadChunk();
+            reader.Decompress();
 
             GameInformation gameInfo = new GameInformation();
 
@@ -978,8 +1027,6 @@ namespace GameMaker.GM8Project
 
             return gameInfo;
         }
-
-
 
         private ProjectNode ReadTree(string name, Project project)
         {

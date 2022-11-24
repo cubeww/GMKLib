@@ -44,7 +44,7 @@ namespace GameMaker.IO
     public class ReaderBase
     {
         private string m_fileName;
-        public byte[] m_reader = null;
+        public MemoryStream m_reader = null;
 
         public string FileName
         {
@@ -59,18 +59,11 @@ namespace GameMaker.IO
 
         public long Position
         {
-            get;
-            set;
+            get { return m_reader.Position; }
+            set { m_reader.Position = value; }
         }
 
         public ReaderBase() { }
-
-        public ReaderBase(byte[] buf)
-        {
-            m_reader = buf;
-            m_fileName = null;
-            Position = 0;
-        }
 
         public virtual long Seek(long offset, SeekOrigin origin)
         {
@@ -78,20 +71,16 @@ namespace GameMaker.IO
             return Position;
         }
 
-       
+
         public virtual byte ReadByte()
         {
-            return m_reader[Position++];
+            return (byte)m_reader.ReadByte();
         }
 
         public virtual byte[] ReadBytes(int count)
         {
-            byte[] b = new byte[count];
-            //for (int i = 0; i < count; i++)
-            //    b[i] = ReadByte();
-            Array.Copy(m_reader, Position, b, 0, count);
-
-            Position += count;
+            var b = new byte[count];
+            m_reader.Read(b, 0, count);
 
             return b;
         }
@@ -131,23 +120,26 @@ namespace GameMaker.IO
             return BitConverter.ToDouble(ReadBytes(8), 0);
         }
 
-        public virtual ReaderBase ReadCompressed()
+        public virtual ReaderBase ReadChunk()
         {
             int count = ReadInt();
+
+            var newReader = new ReaderBase();
+            newReader.m_reader = new MemoryStream(ReadBytes(count));
+            newReader.Position = 0;
+            return newReader;
+        }
+
+        public virtual void Decompress()
+        {
             ReadBytes(2);
 
-            //MemoryStream compressed = new MemoryStream(ReadBytes(count));
-            //MemoryStream decompressed = new MemoryStream();
-            //InflaterInputStream inputStream = new InflaterInputStream(compressed);
-            //inputStream.CopyTo(decompressed);
-
-            MemoryStream compressed = new MemoryStream(ReadBytes(count-2));
-            MemoryStream decompressed = new MemoryStream();
+            MemoryStream compressed = new MemoryStream(ReadBytes((int)m_reader.Length - 2));
             DeflateStream deflateStream = new DeflateStream(compressed, CompressionMode.Decompress);
-            deflateStream.CopyTo(decompressed);
+            m_reader = new MemoryStream();
 
-            return new ReaderBase(decompressed.ToArray());
-
+            deflateStream.CopyTo(m_reader);
+            Position = 0;
         }
 
         public void Open(string path)
@@ -155,7 +147,7 @@ namespace GameMaker.IO
             Close(); // Just in case
 
             m_fileName = path;
-            m_reader = File.ReadAllBytes(path);
+            m_reader = new MemoryStream(File.ReadAllBytes(path));
             Position = 0;
         }
 
@@ -166,25 +158,25 @@ namespace GameMaker.IO
 
             m_reader = null;
         }
-		
-		/// <summary>
-		/// Returns the files GM version. 
-		/// </summary>
-		/// <param name="path">
-		/// A <see cref="System.String"/>
-		/// </param>
-		/// <returns>
-		/// A <see cref="FileVersion"/>
-		/// </returns>
+
+        /// <summary>
+        /// Returns the files GM version. 
+        /// </summary>
+        /// <param name="path">
+        /// A <see cref="System.String"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="FileVersion"/>
+        /// </returns>
         public static FileVersion GetVersion(string path)
         {
-			FileVersion ret;
-				
-			using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite)))
-			{
-				reader.BaseStream.Position = 4;
-				ret = (FileVersion)reader.ReadInt32();
-			}
+            FileVersion ret;
+
+            using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite)))
+            {
+                reader.BaseStream.Position = 4;
+                ret = (FileVersion)reader.ReadInt32();
+            }
             return ret;
         }
 
