@@ -42,22 +42,18 @@ using GMPath = GameMaker.ProjectCommon.Path;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using Action = GameMaker.ProjectCommon.Action;
 using Object = GameMaker.ProjectCommon.Object;
+using System.IO.Compression;
 
 namespace GameMaker.GM8Project
 {
     public class ProjectReader : ReaderBase
     {
-       
+
 
         private MemoryStream m_zlibStream = null;
 
-
-
-
-
-
         public ProjectReader()
-        {}
+        { }
 
         public ProjectReader(string path)
         {
@@ -220,7 +216,7 @@ namespace GameMaker.GM8Project
                 }
                 EndDecompression();
             }
-            
+
             Trigger.LastChanged = System.DateTime.FromOADate(ReadDouble());
 
             return triggers;
@@ -801,7 +797,7 @@ namespace GameMaker.GM8Project
                     instance.CreationCode = ReadString();
                     instance.Locked = ReadBool();
 
-                    Object obj = objects.Find(delegate(Object o) { return o.Id == instance.ObjectId; });
+                    Object obj = objects.Find(delegate (Object o) { return o.Id == instance.ObjectId; });
 
                     if (obj != null)
                     {
@@ -1092,27 +1088,36 @@ namespace GameMaker.GM8Project
                 return base.ReadByte();
         }
 
+        protected override byte[] ReadBytes(int count)
+        {
+            if (m_zlibStream != null)
+            {
+                byte[] b = new byte[count];
+                m_zlibStream.Read(b, 0, count);
 
+                return b;
+            }
+            else
+            {
+                return base.ReadBytes(count);
+            }
+        }
 
         private void BeginDecompression()
         {
             // It would be bad if we started writing over our own data, so prevent it by checking for null (This is probably overkill, but I REALLY want to emphasize this).
             if (m_zlibStream != null)
                 throw new System.InvalidOperationException("Decompression() already in progress."); // Woops, we can't do that!
-
-            Inflater inf = new Inflater();
-
+            
             int size = ReadInt();
+            ReadBytes(2);
 
-            inf.SetInput(ReadBytes(size));
-            byte[] result = new byte[size * 4];
+            MemoryStream compressed = new MemoryStream(ReadBytes(size - 2));
+
+            DeflateStream deflateStream = new DeflateStream(compressed, CompressionMode.Decompress); // 注意： 这里第一个参数同样是填写压缩的数据，但是这次是作为输入的数据
+
             m_zlibStream = new MemoryStream();
-
-            while (!inf.IsFinished)
-            {
-                int length = inf.Inflate(result);
-                m_zlibStream.Write(result, 0, length);
-            }
+            deflateStream.CopyTo(m_zlibStream);
 
             m_zlibStream.Position = 0;
         }

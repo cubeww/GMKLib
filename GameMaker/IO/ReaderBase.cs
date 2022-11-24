@@ -71,7 +71,7 @@ namespace GameMaker.IO
             return m_reader.Seek(offset, origin);
         }
 
-       
+
         protected virtual byte ReadByte()
         {
             return (byte)m_reader.ReadByte();
@@ -80,8 +80,7 @@ namespace GameMaker.IO
         protected virtual byte[] ReadBytes(int count)
         {
             byte[] b = new byte[count];
-            for (int i = 0; i < count; i++)
-                b[i] = ReadByte();
+            m_reader.Read(b, 0, count);
 
             return b;
         }
@@ -127,11 +126,11 @@ namespace GameMaker.IO
 
             m_fileName = path;
             m_reader = new MemoryStream();
-			using (BinaryReader reader = new BinaryReader(new FileStream(m_fileName, FileMode.Open, FileAccess.ReadWrite)))
-			{
-				m_reader.Write(reader.ReadBytes((int)reader.BaseStream.Length), 0, (int)reader.BaseStream.Length);
-				m_reader.Position = 0;
-			}
+            using (BinaryReader reader = new BinaryReader(new FileStream(m_fileName, FileMode.Open, FileAccess.ReadWrite)))
+            {
+                m_reader.Write(reader.ReadBytes((int)reader.BaseStream.Length), 0, (int)reader.BaseStream.Length);
+                m_reader.Position = 0;
+            }
         }
 
         public void Close()
@@ -142,25 +141,25 @@ namespace GameMaker.IO
             m_reader.Close();
             m_reader = null;
         }
-		
-		/// <summary>
-		/// Returns the files GM version. 
-		/// </summary>
-		/// <param name="path">
-		/// A <see cref="System.String"/>
-		/// </param>
-		/// <returns>
-		/// A <see cref="FileVersion"/>
-		/// </returns>
+
+        /// <summary>
+        /// Returns the files GM version. 
+        /// </summary>
+        /// <param name="path">
+        /// A <see cref="System.String"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="FileVersion"/>
+        /// </returns>
         public static FileVersion GetVersion(string path)
         {
-			FileVersion ret;
-				
-			using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite)))
-			{
-				reader.BaseStream.Position = 4;
-				ret = (FileVersion)reader.ReadInt32();
-			}
+            FileVersion ret;
+
+            using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite)))
+            {
+                reader.BaseStream.Position = 4;
+                ret = (FileVersion)reader.ReadInt32();
+            }
             return ret;
         }
 
