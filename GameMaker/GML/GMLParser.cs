@@ -582,7 +582,7 @@ namespace GameMaker.GML
         private static int Code_Variable_Find(string _name)
         {
             GMLVariable value = null;
-            if (!Builtin.Builtins.TryGetValue(_name, out value) && !Builtin.BuiltinsLocal.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
+            if (!Builtin.GlobalVariables.TryGetValue(_name, out value) && !Builtin.LocalVariables.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
             {
                 value = new GMLVariable();
                 value.Name = _name;
@@ -1242,7 +1242,7 @@ namespace GameMaker.GML
                     AddError("only 1 or 2 dimensional arrays are supported", Script, _pass2[num]);
                 }
             }
-            else if (Builtin.BuiltinArray.TryGetValue(gMLToken.Text, out value) || Builtin.BuiltinsLocalArray.TryGetValue(gMLToken.Text, out value))
+            else if (Builtin.GlobalArrays.TryGetValue(gMLToken.Text, out value) || Builtin.LocalArrays.TryGetValue(gMLToken.Text, out value))
             {
                 GMLToken gMLToken2 = new GMLToken(Token.Constant, -1, "0");
                 gMLToken2.Value = new GMLValue(0.0);
