@@ -13,7 +13,7 @@ namespace GMKLibTest
 
             foreach (var scr in project.Scripts)
             {
-                var ast = GMLParser.Parse(project, scr.Name, scr.Code);
+                var ast = Parser.Parse(project, scr.Name, scr.Code);
             }
         }
     }

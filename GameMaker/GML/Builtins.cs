@@ -10,6 +10,22 @@ namespace GameMaker.GML
 {
     public static class Builtins
     {
+        // Object constants
+        public const int OBJECT_SELF = -1;
+
+        public const int OBJECT_OTHER = -2;
+
+        public const int OBJECT_ALL = -3;
+
+        public const int OBJECT_NOONE = -4;
+
+        public const int OBJECT_GLOBAL = -5;
+
+        public const int OBJECT_LOCAL = -7;
+
+        public const int OBJECT_NOTSPECIFIED = -6;
+
+        // Color constants
         public const int clBlack = 0;
 
         public const int clMaroon = 128;
