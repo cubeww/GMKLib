@@ -25,16 +25,7 @@ namespace GameMaker.GML
 
         public const int OBJECT_NOTSPECIFIED = -6;
 
-        public static Dictionary<string, double> Constants { get; set; } = new Dictionary<string, double>();
-        public static Dictionary<string, int> ConstantCount { get; set; } = new Dictionary<string, int>();
-        public static Dictionary<string, GMLFunction> Functions { get; set; } = new Dictionary<string, GMLFunction>();
-        public static Dictionary<string, GMLVariable> Builtins { get; set; } = new Dictionary<string, GMLVariable>();
-        public static Dictionary<string, GMLVariable> BuiltinArray { get; set; } = new Dictionary<string, GMLVariable>();
-        public static Dictionary<string, GMLVariable> BuiltinsLocal { get; set; } = new Dictionary<string, GMLVariable>();
-        public static Dictionary<string, GMLVariable> BuiltinsLocalArray { get; set; } = new Dictionary<string, GMLVariable>();
         private static Dictionary<string, GMLVariable> Variables { get; set; } = new Dictionary<string, GMLVariable>();
-        
-        public static int ID { get; set; } = 0;
 
         private static Project ProjectContext { get; set; } = null;
 
@@ -421,111 +412,6 @@ namespace GameMaker.GML
             ParseError = true;
         }
 
-        public static void Function_Add(string _string, int _numArgs7, int _numArgs8, bool _Pro)
-        {
-            GMLFunction gMLFunction = new GMLFunction();
-            gMLFunction.Name = _string;
-            gMLFunction.Id = ID++;
-            gMLFunction.NumArgs7 = _numArgs7;
-            gMLFunction.NumArgs8 = _numArgs8;
-            gMLFunction.Pro = _Pro;
-            gMLFunction.InstanceFirstParam = false;
-            gMLFunction.OtherSecondParam = false;
-            try
-            {
-                Functions.Add(_string, gMLFunction);
-            }
-            catch (Exception)
-            {
-                //MessageBox.Show(_string);
-            }
-        }
-
-        public static void Function_Add(string _string, int _numArgs7, int _numArgs8, bool _Pro, bool _InstanceFirstParam)
-        {
-            GMLFunction gMLFunction = new GMLFunction();
-            gMLFunction.Name = _string;
-            gMLFunction.Id = ID++;
-            gMLFunction.NumArgs7 = _numArgs7;
-            gMLFunction.NumArgs8 = _numArgs8;
-            gMLFunction.Pro = _Pro;
-            gMLFunction.InstanceFirstParam = _InstanceFirstParam;
-            gMLFunction.OtherSecondParam = false;
-            Functions.Add(_string, gMLFunction);
-        }
-
-        public static void Function_Add(string _string, int _numArgs7, int _numArgs8, bool _Pro, bool _InstanceFirstParam, bool _OtherSecondParam)
-        {
-            GMLFunction gMLFunction = new GMLFunction();
-            gMLFunction.Name = _string;
-            gMLFunction.Id = ID++;
-            gMLFunction.NumArgs7 = _numArgs7;
-            gMLFunction.NumArgs8 = _numArgs8;
-            gMLFunction.Pro = _Pro;
-            gMLFunction.InstanceFirstParam = _InstanceFirstParam;
-            gMLFunction.OtherSecondParam = _OtherSecondParam;
-            Functions.Add(_string, gMLFunction);
-        }
-
-        public static void AddRealConstant(string _name, double _value)
-        {
-            Constants.Add(_name, _value);
-        }
-
-        public static void Variable_BuiltIn_Add(string _name, bool _get, bool _set, bool _pro, string _setFunc, string _getFunc)
-        {
-            GMLVariable gMLVariable = new GMLVariable();
-            gMLVariable.Name = _name;
-            gMLVariable.Id = ID++;
-            gMLVariable.Get = _get;
-            gMLVariable.Set = _set;
-            gMLVariable.Pro = _pro;
-            gMLVariable.SetFunction = _setFunc;
-            gMLVariable.GetFunction = _getFunc;
-            Builtins.Add(_name, gMLVariable);
-        }
-
-        public static void Variable_BuiltIn_Array_Add(string _name, bool _get, bool _set, bool _pro)
-        {
-            GMLVariable gMLVariable = new GMLVariable();
-            gMLVariable.Name = _name;
-            gMLVariable.Id = ID++;
-            gMLVariable.Get = _get;
-            gMLVariable.Set = _set;
-            gMLVariable.Pro = _pro;
-            gMLVariable.SetFunction = null;
-            gMLVariable.GetFunction = null;
-            Builtins.Add(_name, gMLVariable);
-            BuiltinArray.Add(_name, gMLVariable);
-        }
-
-        public static void Variable_BuiltIn_Local_Add(string _name, bool _get, bool _set, bool _pro, string _setFunc, string _getFunc)
-        {
-            GMLVariable gMLVariable = new GMLVariable();
-            gMLVariable.Name = _name;
-            gMLVariable.Id = ID++;
-            gMLVariable.Get = _get;
-            gMLVariable.Set = _set;
-            gMLVariable.Pro = _pro;
-            gMLVariable.SetFunction = _setFunc;
-            gMLVariable.GetFunction = _getFunc;
-            BuiltinsLocal.Add(_name, gMLVariable);
-        }
-
-        public static void Variable_BuiltIn_Local_Array_Add(string _name, bool _get, bool _set, bool _pro)
-        {
-            GMLVariable gMLVariable = new GMLVariable();
-            gMLVariable.Name = _name;
-            gMLVariable.Id = ID++;
-            gMLVariable.Get = _get;
-            gMLVariable.Set = _set;
-            gMLVariable.Pro = _pro;
-            gMLVariable.SetFunction = null;
-            gMLVariable.GetFunction = null;
-            BuiltinsLocal.Add(_name, gMLVariable);
-            BuiltinsLocalArray.Add(_name, gMLVariable);
-        }
-
         public static int Find<T>(IList<T> _list, string _name)
             where T : Resource
         {
@@ -584,7 +470,7 @@ namespace GameMaker.GML
                 }
             }
             GMLFunction value = null;
-            if (!Functions.TryGetValue(_name, out value))
+            if (!Builtin.Functions.TryGetValue(_name, out value))
             {
                 return -1;
             }
@@ -655,8 +541,8 @@ namespace GameMaker.GML
             _val = new GMLValue();
             _val.Kind = Kind.Number;
             int value = 0;
-            ConstantCount.TryGetValue(_name, out value);
-            ConstantCount[_name] = value + 1;
+            Builtin.ConstantCount.TryGetValue(_name, out value);
+            Builtin.ConstantCount[_name] = value + 1;
             int num = FindResourceIndexFromName(_name);
             if (num >= 0)
             {
@@ -685,7 +571,7 @@ namespace GameMaker.GML
                 return true;
             }
             double value3 = 0.0;
-            if (!Constants.TryGetValue(_name, out value3))
+            if (!Builtin.Constants.TryGetValue(_name, out value3))
             {
                 return false;
             }
@@ -696,7 +582,7 @@ namespace GameMaker.GML
         private static int Code_Variable_Find(string _name)
         {
             GMLVariable value = null;
-            if (!Builtins.TryGetValue(_name, out value) && !BuiltinsLocal.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
+            if (!Builtin.Builtins.TryGetValue(_name, out value) && !Builtin.BuiltinsLocal.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
             {
                 value = new GMLVariable();
                 value.Name = _name;
@@ -1356,7 +1242,7 @@ namespace GameMaker.GML
                     AddError("only 1 or 2 dimensional arrays are supported", Script, _pass2[num]);
                 }
             }
-            else if (BuiltinArray.TryGetValue(gMLToken.Text, out value) || BuiltinsLocalArray.TryGetValue(gMLToken.Text, out value))
+            else if (Builtin.BuiltinArray.TryGetValue(gMLToken.Text, out value) || Builtin.BuiltinsLocalArray.TryGetValue(gMLToken.Text, out value))
             {
                 GMLToken gMLToken2 = new GMLToken(Token.Constant, -1, "0");
                 gMLToken2.Value = new GMLValue(0.0);
