@@ -1,4 +1,5 @@
 ﻿using GameMaker.GM8Project;
+using GameMaker.GML;
 using System.Diagnostics;
 
 namespace GMKLibTest
@@ -7,12 +8,13 @@ namespace GMKLibTest
     {
         static void Main(string[] args)
         {
-            var sw = new Stopwatch();
-            sw.Start();
             var reader = new ProjectReader(@"D:\Games\I Wanna\I Wanna Kill the Kamilia 3 EZ\I Wanna Kill the Kamilia 3 EZ_online.gm81");
             var project = reader.ReadProject();
-            Console.WriteLine(sw.ElapsedMilliseconds);
 
+            foreach (var scr in project.Scripts)
+            {
+                var token = GMLCompile.Compile(project, scr.Name, scr.Code, out var errors);
+            }
         }
     }
 }
