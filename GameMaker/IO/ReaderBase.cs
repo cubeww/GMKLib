@@ -33,19 +33,18 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
+using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 
 namespace GameMaker.IO
 {
     public class ReaderBase
     {
-
-
         private string m_fileName;
-        protected MemoryStream m_reader = null;
-
-
+        public byte[] m_reader = null;
 
         public string FileName
         {
@@ -60,38 +59,49 @@ namespace GameMaker.IO
 
         public long Position
         {
-            get { return m_reader.Position; }
-            set { m_reader.Position = value; }
+            get;
+            set;
         }
 
+        public ReaderBase() { }
 
-
-        protected virtual long Seek(long offset, SeekOrigin origin)
+        public ReaderBase(byte[] buf)
         {
-            return m_reader.Seek(offset, origin);
+            m_reader = buf;
+            m_fileName = null;
+            Position = 0;
+        }
+
+        public virtual long Seek(long offset, SeekOrigin origin)
+        {
+            Position = offset;
+            return Position;
         }
 
        
-        protected virtual byte ReadByte()
+        public virtual byte ReadByte()
         {
-            return (byte)m_reader.ReadByte();
+            return m_reader[Position++];
         }
 
-        protected virtual byte[] ReadBytes(int count)
+        public virtual byte[] ReadBytes(int count)
         {
             byte[] b = new byte[count];
-            for (int i = 0; i < count; i++)
-                b[i] = ReadByte();
+            //for (int i = 0; i < count; i++)
+            //    b[i] = ReadByte();
+            Array.Copy(m_reader, Position, b, 0, count);
+
+            Position += count;
 
             return b;
         }
 
-        protected virtual char ReadChar()
+        public virtual char ReadChar()
         {
             return (char)ReadByte();
         }
 
-        protected virtual char[] ReadChars(int count)
+        public virtual char[] ReadChars(int count)
         {
             char[] c = new char[count];
             for (int i = 0; i < count; i++)
@@ -100,25 +110,44 @@ namespace GameMaker.IO
             return c;
         }
 
-        protected virtual string ReadString()
+        public virtual string ReadString()
         {
             int len = ReadInt();
             return new string(ReadChars(len));
         }
 
-        protected virtual int ReadInt()
+        public virtual int ReadInt()
         {
             return BitConverter.ToInt32(ReadBytes(4), 0);
         }
 
-        protected virtual bool ReadBool()
+        public virtual bool ReadBool()
         {
             return BitConverter.ToBoolean(ReadBytes(4), 0);
         }
 
-        protected virtual double ReadDouble()
+        public virtual double ReadDouble()
         {
             return BitConverter.ToDouble(ReadBytes(8), 0);
+        }
+
+        public virtual ReaderBase ReadCompressed()
+        {
+            int count = ReadInt();
+            ReadBytes(2);
+
+            //MemoryStream compressed = new MemoryStream(ReadBytes(count));
+            //MemoryStream decompressed = new MemoryStream();
+            //InflaterInputStream inputStream = new InflaterInputStream(compressed);
+            //inputStream.CopyTo(decompressed);
+
+            MemoryStream compressed = new MemoryStream(ReadBytes(count-2));
+            MemoryStream decompressed = new MemoryStream();
+            DeflateStream deflateStream = new DeflateStream(compressed, CompressionMode.Decompress);
+            deflateStream.CopyTo(decompressed);
+
+            return new ReaderBase(decompressed.ToArray());
+
         }
 
         public void Open(string path)
@@ -126,12 +155,8 @@ namespace GameMaker.IO
             Close(); // Just in case
 
             m_fileName = path;
-            m_reader = new MemoryStream();
-			using (BinaryReader reader = new BinaryReader(new FileStream(m_fileName, FileMode.Open, FileAccess.ReadWrite)))
-			{
-				m_reader.Write(reader.ReadBytes((int)reader.BaseStream.Length), 0, (int)reader.BaseStream.Length);
-				m_reader.Position = 0;
-			}
+            m_reader = File.ReadAllBytes(path);
+            Position = 0;
         }
 
         public void Close()
@@ -139,7 +164,6 @@ namespace GameMaker.IO
             if (m_reader == null)
                 return;
 
-            m_reader.Close();
             m_reader = null;
         }
 		

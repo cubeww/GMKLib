@@ -185,7 +185,7 @@ namespace GameMaker.ExtensionProject
             return p;
         }
 
-        protected override byte ReadByte()
+        public override byte ReadByte()
         {
             if (m_obfuscation.SwapTable != null)
                 return (byte)m_obfuscation.SwapTable[1][base.ReadByte()];
