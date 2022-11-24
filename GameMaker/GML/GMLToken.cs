@@ -5,9 +5,9 @@ namespace GameMaker.GML
 {
 	public class GMLToken
 	{
-		private static int ms_tabcount;
+		private static int TabCount { get; set; }
 
-		public eToken Token
+		public Token Token
 		{
 			get;
 			set;
@@ -43,7 +43,7 @@ namespace GameMaker.GML
 			set;
 		}
 
-		public GMLToken(eToken _tok, int _index, string _text)
+		public GMLToken(Token _tok, int _index, string _text)
 		{
 			Token = _tok;
 			Index = _index;
@@ -51,7 +51,7 @@ namespace GameMaker.GML
 			Children = new List<GMLToken>();
 		}
 
-		public GMLToken(eToken _tok, GMLToken _pass1, int _id)
+		public GMLToken(Token _tok, GMLToken _pass1, int _id)
 		{
 			Token = _tok;
 			Index = _pass1.Index;
@@ -61,7 +61,7 @@ namespace GameMaker.GML
 			Children = new List<GMLToken>();
 		}
 
-		public GMLToken(eToken _tok, GMLToken _pass1, int _id, GMLValue _value)
+		public GMLToken(Token _tok, GMLToken _pass1, int _id, GMLValue _value)
 		{
 			Token = _tok;
 			Index = _pass1.Index;
@@ -88,18 +88,18 @@ namespace GameMaker.GML
 			if (Children.Count > 0)
 			{
 				stringBuilder.Append("Children=[ \n");
-				ms_tabcount++;
+				TabCount++;
 				foreach (GMLToken child in Children)
 				{
-					for (int i = 0; i < ms_tabcount; i++)
+					for (int i = 0; i < TabCount; i++)
 					{
 						stringBuilder.AppendFormat("  ");
 					}
 					stringBuilder.Append(child.ToString());
 					stringBuilder.Append(",\n");
 				}
-				ms_tabcount--;
-				for (int j = 0; j < ms_tabcount; j++)
+				TabCount--;
+				for (int j = 0; j < TabCount; j++)
 				{
 					stringBuilder.AppendFormat("  ");
 				}
