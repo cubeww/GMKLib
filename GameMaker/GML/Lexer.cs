@@ -572,33 +572,33 @@ namespace GameMaker.GML
             return value.Id;
         }
 
-        private static void CreateFunctionsToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
+        private static void CreateFunctionsToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
-            int num = Code_Function_Find(_pass1[_index].Text);
+            int num = Code_Function_Find(tokens[_index].Text);
             if (num < 0)
             {
-                AddError(string.Format("unknown function or script {0}", _pass1[_index].Text), _script, _pass1[_index]);
+                AddError(string.Format("unknown function or script {0}", tokens[_index].Text), _script, tokens[_index]);
             }
-            _pass2.Add(new GMLToken(Token.Function, _pass1[_index], num));
+            newTokens.Add(new GMLToken(Token.Function, tokens[_index], num));
         }
 
-        private static void CreateNameToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
+        private static void CreateNameToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
             GMLValue _val = null;
-            if (!Code_Constant_Find(_pass1[_index].Text, out _val))
+            if (!Code_Constant_Find(tokens[_index].Text, out _val))
             {
-                int id = Code_Variable_Find(_pass1[_index].Text);
-                _pass2.Add(new GMLToken(Token.Variable, _pass1[_index], id));
+                int id = Code_Variable_Find(tokens[_index].Text);
+                newTokens.Add(new GMLToken(Token.Variable, tokens[_index], id));
             }
             else
             {
-                _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, _val));
+                newTokens.Add(new GMLToken(Token.Constant, tokens[_index], 0, _val));
             }
         }
 
-        private static void CreateValueToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
+        private static void CreateValueToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
-            string text = _pass1[_index].Text;
+            string text = tokens[_index].Text;
             GMLValue gMLValue = null;
             if (text[0] == '$')
             {
@@ -610,21 +610,21 @@ namespace GameMaker.GML
                 double result = 0.0;
                 if (!double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                 {
-                    AddError(string.Format("Number {0} in incorrect format", text), _script, _pass1[_index]);
+                    AddError(string.Format("Number {0} in incorrect format", text), _script, tokens[_index]);
                 }
                 gMLValue = new GMLValue(result);
             }
-            _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, gMLValue));
+            newTokens.Add(new GMLToken(Token.Constant, tokens[_index], 0, gMLValue));
         }
 
-        private static void CreateStringToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
+        private static void CreateStringToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
-            _pass2.Add(new GMLToken(Token.Constant, _pass1[_index], 0, new GMLValue(_pass1[_index].Text)));
+            newTokens.Add(new GMLToken(Token.Constant, tokens[_index], 0, new GMLValue(tokens[_index].Text)));
         }
 
-        private static void CreateNormalToken(string _script, List<GMLToken> _pass1, List<GMLToken> _pass2, int _index)
+        private static void CreateNormalToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
-            _pass2.Add(new GMLToken(_pass1[_index].Token, _pass1[_index], 0));
+            newTokens.Add(new GMLToken(tokens[_index].Token, tokens[_index], 0));
         }
         public static List<GMLToken> Tokenize(Project _assets, string _name, string _script)
         {

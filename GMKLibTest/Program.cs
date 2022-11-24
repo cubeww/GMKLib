@@ -14,6 +14,8 @@ namespace GMKLibTest
             foreach (var scr in project.Scripts)
             {
                 var ast = Parser.Parse(project, scr.Name, scr.Code);
+                Console.WriteLine(ast);
+                Console.WriteLine();
             }
         }
     }
