@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace GameMaker.GML
 {
@@ -118,6 +119,80 @@ namespace GameMaker.GML
             }
             stringBuilder.Append('>');
             return stringBuilder.ToString();
+        }
+
+        public string Format()
+        {
+            string str = "";
+
+            void FormatAST(AST ast)
+            {
+                int i = 0;
+                switch (ast.Token)
+                {
+                    case Token.Var:
+                        str += "var ";
+                        foreach (var child in ast.Children)
+                        {
+                            FormatAST(child);
+                            if (i++ != ast.Children.Count - 1)
+                                str += ", ";
+                        }
+                        break;
+                    case Token.Variable:
+                        str += ast.Text;
+                        break;
+                    case Token.Assign:
+                        FormatAST(ast.Children[0]);
+                        str += " = ";
+                        FormatAST(ast.Children[2]);
+                        break;
+                    case Token.Constant:
+                        str += ast.Text;
+                        break;
+                    case Token.Binary:
+                        FormatAST(ast.Children[0]);
+                        FormatAST(ast.Children[1]);
+                        FormatAST(ast.Children[2]);
+                        break;
+                    case Token.Function:
+                        str += ast.Text;
+                        str += "(";
+                        foreach (var child in ast.Children)
+                        {
+                            FormatAST(child);
+                            if (i++ != ast.Children.Count - 1)
+                                str += ", ";
+                        }
+                        str += ")";
+                        break;
+                    case Token.Dot:
+                        FormatAST(ast.Children[0]);
+                        str += ".";
+                        FormatAST(ast.Children[1]);
+                        break;
+                    case Token.Block:
+                        str += "{";
+                        foreach (var child in ast.Children)
+                        {
+                            FormatAST(child);
+                            str += ";";
+                        }
+                        str += "}";
+                        break;
+                    default:
+                        str += ast.Text;
+                        break;
+                }
+            }
+
+            foreach (var child in Children)
+            {
+                FormatAST(child);
+                str += ";";
+            }
+
+            return str;
         }
     }
 }

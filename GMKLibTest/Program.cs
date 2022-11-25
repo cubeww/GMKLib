@@ -8,14 +8,20 @@ namespace GMKLibTest
     {
         static void Main(string[] args)
         {
-            var reader = new ProjectReader(@"D:\Games\I Wanna\I Wanna Kill the Kamilia 3 EZ\I Wanna Kill the Kamilia 3 EZ_online.gm81");
+            var reader = new ProjectReader(@"D:\Games\I Wanna\I want Lollipop\I want Lollipop.gmk");
             var project = reader.ReadProject();
 
             foreach (var scr in project.Scripts)
             {
-                var ast = Parser.Parse(project, scr.Name, scr.Code);
+                var ast = Parser.Parse(project, scr.Name, @"var a,b;
+a=1+2*3;
+b=a.c;
+draw_text(a.x,b.y,'dingzhen'+string(mama))
+");
                 Console.WriteLine(ast);
                 Console.WriteLine();
+                Console.WriteLine(ast.Format());
+                break;
             }
         }
     }

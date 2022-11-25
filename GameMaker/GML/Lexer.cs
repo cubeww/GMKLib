@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameMaker.GML
 {
-    public class Lexer
+    public static class Lexer
     {
         private static Dictionary<string, GMLVariable> Variables { get; set; } = new Dictionary<string, GMLVariable>();
         private static Project ProjectContext { get; set; } = null;
@@ -419,7 +419,7 @@ namespace GameMaker.GML
             return result;
         }
 
-        private static int Code_Function_Find(string _name)
+        private static int FindFunction(string _name)
         {
             if (ProjectContext != null)
             {
@@ -516,7 +516,7 @@ namespace GameMaker.GML
             return result;
         }
 
-        private static bool Code_Constant_Find(string _name, out GMLValue _val)
+        private static bool FindConstant(string _name, out GMLValue _val)
         {
             _val = new GMLValue();
             _val.Kind = Kind.Number;
@@ -559,7 +559,7 @@ namespace GameMaker.GML
             return true;
         }
 
-        private static int Code_Variable_Find(string _name)
+        private static int FindVariable(string _name)
         {
             GMLVariable value = null;
             if (!Builtins.GlobalVariables.TryGetValue(_name, out value) && !Builtins.LocalVariables.TryGetValue(_name, out value) && !Variables.TryGetValue(_name, out value))
@@ -574,7 +574,7 @@ namespace GameMaker.GML
 
         private static void CreateFunctionsToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
-            int num = Code_Function_Find(tokens[_index].Text);
+            int num = FindFunction(tokens[_index].Text);
             if (num < 0)
             {
                 AddError(string.Format("unknown function or script {0}", tokens[_index].Text), _script, tokens[_index]);
@@ -585,9 +585,9 @@ namespace GameMaker.GML
         private static void CreateNameToken(string _script, List<GMLToken> tokens, List<GMLToken> newTokens, int _index)
         {
             GMLValue _val = null;
-            if (!Code_Constant_Find(tokens[_index].Text, out _val))
+            if (!FindConstant(tokens[_index].Text, out _val))
             {
-                int id = Code_Variable_Find(tokens[_index].Text);
+                int id = FindVariable(tokens[_index].Text);
                 newTokens.Add(new GMLToken(Token.Variable, tokens[_index], id));
             }
             else
