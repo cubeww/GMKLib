@@ -135,7 +135,6 @@ namespace GameMaker.GML
                 astNode2.Token = Token.Constant;
                 astNode.Children.Add(astNode2);
                 num++;
-                //GML2JavaScript.ms_globals[astNode2.Text] = astNode2.Text;
                 if (tokens[num].Token == Token.SepArgument)
                 {
                     num++;

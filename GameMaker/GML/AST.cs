@@ -55,21 +55,21 @@ namespace GameMaker.GML
             Children = new List<AST>();
         }
 
-        public AST(Token _tok, GMLToken _pass1, int _id)
+        public AST(Token _tok, GMLToken _token, int _id)
         {
             Token = _tok;
-            Index = _pass1.Index;
-            Text = _pass1.Text;
+            Index = _token.Index;
+            Text = _token.Text;
             Id = _id;
             Value = new GMLValue();
             Children = new List<AST>();
         }
 
-        public AST(Token _tok, GMLToken _pass1, int _id, GMLValue _value)
+        public AST(Token _tok, GMLToken _token, int _id, GMLValue _value)
         {
             Token = _tok;
-            Index = _pass1.Index;
-            Text = _pass1.Text;
+            Index = _token.Index;
+            Text = _token.Text;
             Id = _id;
             Value = new GMLValue(_value);
             Children = new List<AST>();

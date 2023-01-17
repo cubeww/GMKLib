@@ -42,20 +42,20 @@ namespace GameMaker.GML
 			Text = _text;
 		}
 
-		public GMLToken(Token _tok, GMLToken _pass1, int _id)
+		public GMLToken(Token _tok, GMLToken _token, int _id)
 		{
 			Token = _tok;
-			Index = _pass1.Index;
-			Text = _pass1.Text;
+			Index = _token.Index;
+			Text = _token.Text;
 			Id = _id;
 			Value = new GMLValue();
 		}
 
-		public GMLToken(Token _tok, GMLToken _pass1, int _id, GMLValue _value)
+		public GMLToken(Token _tok, GMLToken _token, int _id, GMLValue _value)
 		{
 			Token = _tok;
-			Index = _pass1.Index;
-			Text = _pass1.Text;
+			Index = _token.Index;
+			Text = _token.Text;
 			Id = _id;
 			Value = new GMLValue(_value);
 		}
